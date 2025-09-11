@@ -10,6 +10,8 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@mantine/core": "8.3.1",
+		"@mantine/hooks": "8.3.1",
 		"@tanstack/react-query": "5.87.4",
 		"firebase": "12.2.1",
 		"react": "19.1.1",

@@ -1,6 +1,7 @@
 {
   "name": "functions",
   "scripts": {
+    "codegen": "orval",
     "build": "tsc",
     "build:watch": "tsc --watch",
     "serve": "bun run build && firebase emulators:start --only functions",

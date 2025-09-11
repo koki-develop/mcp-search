@@ -28,16 +28,18 @@ const firestore = getFirestore();
 setGlobalOptions({ maxInstances: 10 });
 
 export const fetchMcpServers = onSchedule("0,30 * * * *", async () => {
-  logger.info("This will be run every hour at minute 0 and 30");
+  logger.info("Starting fetchMcpServers function");
 
   let cursor: string | undefined;
   do {
+    logger.info(`Fetching servers with cursor: ${cursor}`);
     const response = await getV0Servers({ cursor, limit: 100 });
     if (response.status !== 200) {
       throw new Error(
         `Failed to fetch servers(${response.status}): ${JSON.stringify(response.data)}`,
       );
     }
+    logger.info(`Fetched ${response.data.servers.length} servers`);
 
     const batch = firestore.batch();
     let writeCount = 0;
@@ -62,4 +64,6 @@ export const fetchMcpServers = onSchedule("0,30 * * * *", async () => {
     await new Promise((resolve) => setTimeout(resolve, 1000)); // Sleep for 3 second to avoid rate limit
     cursor = response.data.metadata?.next_cursor;
   } while (cursor);
+
+  logger.info("Finished fetchMcpServers function");
 });

@@ -4,6 +4,7 @@ import {
 	Container,
 	Loader,
 	Stack,
+	Text,
 	TextInput,
 } from "@mantine/core";
 import { useDebouncedState, useHotkeys } from "@mantine/hooks";
@@ -18,6 +19,7 @@ export default function Home() {
 	const { isFetching, data, hasNextPage, fetchNextPage } = useServers({
 		keyword,
 	});
+	const servers = data ?? [];
 
 	useHotkeys([
 		[
@@ -41,11 +43,17 @@ export default function Home() {
 					onChange={(e) => setKeyword(e.currentTarget.value)}
 				/>
 
-				<Stack gap="sm">
-					{data?.map((server) => (
-						<ServerCard key={server.id} server={server} />
-					))}
-				</Stack>
+				{!isFetching && servers.length === 0 && (
+					<Text ta="center">No servers found.</Text>
+				)}
+
+				{servers.length > 0 && (
+					<Stack gap="sm">
+						{servers.map((server) => (
+							<ServerCard key={server.id} server={server} />
+						))}
+					</Stack>
+				)}
 
 				{isFetching && (
 					<Box ta="center">

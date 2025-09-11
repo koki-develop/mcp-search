@@ -3,7 +3,7 @@ rules_version='2'
 service cloud.firestore {
   match /databases/{database}/documents {
     match /{document=**} {
-      match /servers/{id} {
+      match /servers_v0/{id} {
         allow read;
       }
     }

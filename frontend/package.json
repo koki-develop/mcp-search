@@ -5,6 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
+		"fmt": "biome check --write --unsafe .",
 		"build": "tsc -b && vite build",
 		"preview": "vite preview"
 	},

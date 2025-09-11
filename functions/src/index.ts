@@ -1,15 +1,16 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * import {onCall} from "firebase-functions/v2/https";
- * import {onDocumentWritten} from "firebase-functions/v2/firestore";
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
-
-import {setGlobalOptions} from "firebase-functions";
-import {onRequest} from "firebase-functions/https";
+import { getApps, initializeApp } from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
 import * as logger from "firebase-functions/logger";
+import { setGlobalOptions } from "firebase-functions/v2/options";
+import { onSchedule } from "firebase-functions/v2/scheduler";
+import { getV0Servers } from "./api.generated";
+
+const apps = getApps();
+if (apps.length === 0) {
+  initializeApp();
+}
+
+const firestore = getFirestore();
 
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
@@ -26,7 +27,43 @@ import * as logger from "firebase-functions/logger";
 // this will be the maximum concurrent request count.
 setGlobalOptions({ maxInstances: 10 });
 
-export const helloWorld = onRequest((request, response) => {
-  logger.info("Hello logs!", {structuredData: true});
-  response.send("Hello from Firebase!");
+export const fetchMcpServers = onSchedule("0,30 * * * *", async () => {
+  logger.info("Starting fetchMcpServers function");
+
+  let cursor: string | undefined;
+  do {
+    logger.info(`Fetching servers with cursor: ${cursor}`);
+    const response = await getV0Servers({ cursor, limit: 100 });
+    if (response.status !== 200) {
+      throw new Error(
+        `Failed to fetch servers(${response.status}): ${JSON.stringify(response.data)}`,
+      );
+    }
+    logger.info(`Fetched ${response.data.servers.length} servers`);
+
+    const batch = firestore.batch();
+    let writeCount = 0;
+    for (const server of response.data.servers) {
+      const id =
+        server._meta?.["io.modelcontextprotocol.registry/official"]?.id;
+      if (!id) {
+        logger.warn(`Server does not have id: ${JSON.stringify(server)}`);
+        continue;
+      }
+      batch.set(firestore.collection("servers_v0").doc(id), server);
+      writeCount++;
+    }
+
+    if (writeCount > 0) {
+      await batch.commit();
+      logger.info(`Wrote ${writeCount} servers to Firestore.`);
+    } else {
+      logger.info("No servers to write, exiting loop.");
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // Sleep for 3 second to avoid rate limit
+    cursor = response.data.metadata?.next_cursor;
+  } while (cursor);
+
+  logger.info("Finished fetchMcpServers function");
 });

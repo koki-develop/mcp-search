@@ -17,7 +17,7 @@ import * as logger from "firebase-functions/logger";
 // this will be the maximum concurrent request count.
 setGlobalOptions({ maxInstances: 10 });
 
-export const fetchMcpServers = onSchedule("* 0,30 * * * *", async () => {
+export const fetchMcpServers = onSchedule("0,30 * * * *", async () => {
   logger.info("This will be run every hour at minute 0 and 30");
   // TODO: implement
 });

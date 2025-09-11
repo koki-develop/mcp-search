@@ -78,7 +78,7 @@ export default function ServerCard({ server }: ServerCardProps) {
 				}
 			>
 				<Stack gap="md">
-					<Stack gap="md">
+					<Stack gap={6}>
 						<Text>{server.description}</Text>
 
 						{server.repository?.url && (

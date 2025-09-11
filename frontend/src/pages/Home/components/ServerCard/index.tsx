@@ -27,7 +27,14 @@ export default function ServerCard({ server }: ServerCardProps) {
 
 	return (
 		<>
-			<Card withBorder shadow="xs" onClick={open}>
+			<Card
+				component="button"
+				ta="left"
+				styles={{ root: { cursor: "pointer" } }}
+				withBorder
+				shadow="xs"
+				onClick={open}
+			>
 				<Text style={{ wordBreak: "break-all" }} size="xl" fw="bold">
 					{server.name}
 				</Text>

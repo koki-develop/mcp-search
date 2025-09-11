@@ -6,20 +6,34 @@ import {
 	Stack,
 	TextInput,
 } from "@mantine/core";
-import { useDebouncedState } from "@mantine/hooks";
+import { useDebouncedState, useHotkeys } from "@mantine/hooks";
+import { IconSearch } from "@tabler/icons-react";
+import { useRef } from "react";
 import { useServers } from "../../lib/servers";
 import ServerCard from "./ServerCard";
 
 export default function Home() {
+	const searchInputRef = useRef<HTMLInputElement>(null);
 	const [keyword, setKeyword] = useDebouncedState<string>("", 200);
 	const { isFetching, data, hasNextPage, fetchNextPage } = useServers({
 		keyword,
 	});
 
+	useHotkeys([
+		[
+			"/",
+			() => {
+				searchInputRef.current?.focus();
+			},
+		],
+	]);
+
 	return (
 		<Container py="lg">
 			<Stack gap="sm">
 				<TextInput
+					ref={searchInputRef}
+					leftSection={<IconSearch />}
 					size="lg"
 					type="search"
 					placeholder="Search Servers..."

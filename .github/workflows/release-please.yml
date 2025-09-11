@@ -1,0 +1,43 @@
+name: Release Please
+
+permissions: {}
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release-please:
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    outputs:
+      should-release: ${{ steps.release-please.outputs.release_created }}
+    steps:
+      - uses: googleapis/release-please-action@c2a5a2bd6a758a0937f1ddb1e8950609867ed15c # v4.3.0
+        id: release-please
+        with:
+          release-type: node
+
+  deploy:
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    needs: release-please
+    if: ${{ needs.release-please.outputs.should-release == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+      - run: bunx firebase deploy --token="${FIREBASE_TOKEN}"
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

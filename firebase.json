@@ -17,6 +17,7 @@
         "*.local"
       ],
       "predeploy": [
+        "bun install --cwd \"$RESOURCE_DIR\" --frozen-lockfile",
         "bun run --cwd \"$RESOURCE_DIR\" build"
       ]
     }

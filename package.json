@@ -1,3 +1,6 @@
 {
-  "name": "mcp-search"
+  "name": "mcp-search",
+  "devDependencies": {
+    "firebase-tools": "14.16.0"
+  }
 }

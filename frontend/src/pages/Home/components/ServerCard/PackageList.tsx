@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { IconExternalLink } from "@tabler/icons-react";
 import type { Package } from "../../../../lib/api.generated";
-import { packageUrl } from "./serverUtils";
+import { packageUrl } from "./utils";
 
 type ServerPackageListProps = {
 	packages: Package[];

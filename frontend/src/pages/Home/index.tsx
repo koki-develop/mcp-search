@@ -9,14 +9,14 @@ import {
 } from "@mantine/core";
 import { useDebouncedState, useHotkeys } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons-react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useServers } from "../../lib/servers";
 import ServerCard from "./ServerCard";
 
 export default function Home() {
 	const searchInputRef = useRef<HTMLInputElement>(null);
 	const [keyword, setKeyword] = useDebouncedState<string>("", 200);
-	const { isFetching, data, hasNextPage, fetchNextPage } = useServers({
+	const { isFetching, data, hasNextPage, fetchNextPage, error } = useServers({
 		keyword,
 	});
 	const servers = data ?? [];
@@ -29,6 +29,12 @@ export default function Home() {
 			},
 		],
 	]);
+
+	useEffect(() => {
+		if (error) {
+			console.error(error);
+		}
+	}, [error]);
 
 	return (
 		<Container py="lg">

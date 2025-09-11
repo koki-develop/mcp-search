@@ -1,6 +1,15 @@
+import { getApps, initializeApp } from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
 import { setGlobalOptions } from "firebase-functions";
-import { onSchedule } from "firebase-functions/v2/scheduler";
 import * as logger from "firebase-functions/logger";
+import { onSchedule } from "firebase-functions/v2/scheduler";
+
+const apps = getApps();
+if (apps.length === 0) {
+  initializeApp();
+}
+
+const firestore = getFirestore();
 
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
@@ -19,5 +28,7 @@ setGlobalOptions({ maxInstances: 10 });
 
 export const fetchMcpServers = onSchedule("0,30 * * * *", async () => {
   logger.info("This will be run every hour at minute 0 and 30");
-  // TODO: implement
+
+  let cursor: string | undefined;
+  do {} while (cursor !== undefined);
 });

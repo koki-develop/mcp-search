@@ -67,9 +67,9 @@ export default function Home() {
 					</Box>
 				)}
 
-				{hasNextPage && (
+				{!isFetching && hasNextPage && (
 					<Box ta="center">
-						<Button onClick={() => fetchNextPage()} disabled={isFetching}>
+						<Button onClick={() => fetchNextPage()}>
 							Load More
 						</Button>
 					</Box>

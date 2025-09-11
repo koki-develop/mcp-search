@@ -7,7 +7,7 @@ import { getV0Servers } from "./api.generated";
 
 const apps = getApps();
 if (apps.length === 0) {
-  initializeApp();
+	initializeApp();
 }
 
 const firestore = getFirestore();
@@ -28,42 +28,42 @@ const firestore = getFirestore();
 setGlobalOptions({ maxInstances: 10 });
 
 export const fetchMcpServers = onSchedule("0,30 * * * *", async () => {
-  logger.info("Starting fetchMcpServers function");
+	logger.info("Starting fetchMcpServers function");
 
-  let cursor: string | undefined;
-  do {
-    logger.info(`Fetching servers with cursor: ${cursor}`);
-    const response = await getV0Servers({ cursor, limit: 100 });
-    if (response.status !== 200) {
-      throw new Error(
-        `Failed to fetch servers(${response.status}): ${JSON.stringify(response.data)}`,
-      );
-    }
-    logger.info(`Fetched ${response.data.servers.length} servers`);
+	let cursor: string | undefined;
+	do {
+		logger.info(`Fetching servers with cursor: ${cursor}`);
+		const response = await getV0Servers({ cursor, limit: 100 });
+		if (response.status !== 200) {
+			throw new Error(
+				`Failed to fetch servers(${response.status}): ${JSON.stringify(response.data)}`,
+			);
+		}
+		logger.info(`Fetched ${response.data.servers.length} servers`);
 
-    const batch = firestore.batch();
-    let writeCount = 0;
-    for (const server of response.data.servers) {
-      const id =
-        server._meta?.["io.modelcontextprotocol.registry/official"]?.id;
-      if (!id) {
-        logger.warn(`Server does not have id: ${JSON.stringify(server)}`);
-        continue;
-      }
-      batch.set(firestore.collection("servers_v0").doc(id), server);
-      writeCount++;
-    }
+		const batch = firestore.batch();
+		let writeCount = 0;
+		for (const server of response.data.servers) {
+			const id =
+				server._meta?.["io.modelcontextprotocol.registry/official"]?.id;
+			if (!id) {
+				logger.warn(`Server does not have id: ${JSON.stringify(server)}`);
+				continue;
+			}
+			batch.set(firestore.collection("servers_v0").doc(id), server);
+			writeCount++;
+		}
 
-    if (writeCount > 0) {
-      await batch.commit();
-      logger.info(`Wrote ${writeCount} servers to Firestore.`);
-    } else {
-      logger.info("No servers to write, exiting loop.");
-    }
+		if (writeCount > 0) {
+			await batch.commit();
+			logger.info(`Wrote ${writeCount} servers to Firestore.`);
+		} else {
+			logger.info("No servers to write, exiting loop.");
+		}
 
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // Sleep for 3 second to avoid rate limit
-    cursor = response.data.metadata?.next_cursor;
-  } while (cursor);
+		await new Promise((resolve) => setTimeout(resolve, 1000)); // Sleep for 3 second to avoid rate limit
+		cursor = response.data.metadata?.next_cursor;
+	} while (cursor);
 
-  logger.info("Finished fetchMcpServers function");
+	logger.info("Finished fetchMcpServers function");
 });

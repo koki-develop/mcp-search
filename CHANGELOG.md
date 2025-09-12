@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.0](https://github.com/koki-develop/mcp-search/compare/v0.1.4...v0.2.0) (2025-09-12)
+
+
+### Features
+
+* **frontend:** Show command example ([275336b](https://github.com/koki-develop/mcp-search/commit/275336b544d66b6d84f61890013887f2e51b1dc7))
+
+
+### Bug Fixes
+
+* **functions:** Remove packageRegistryTypes and remoteTransportTypes ([66ae21a](https://github.com/koki-develop/mcp-search/commit/66ae21a12e8397b32404c794faf5800a8f32e9f2))
+* **functions:** Save latest servers only ([1a1fb2b](https://github.com/koki-develop/mcp-search/commit/1a1fb2b065748e4450c46e6989a7bd80e107792e))
+* **functions:** Set timeout to 10m ([1769522](https://github.com/koki-develop/mcp-search/commit/176952292941bb8033c2a16ac4df2265a1c69810))
+
 ## [0.1.4](https://github.com/koki-develop/mcp-search/compare/v0.1.3...v0.1.4) (2025-09-12)
 
 

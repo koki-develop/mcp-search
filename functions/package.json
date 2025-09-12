@@ -1,7 +1,9 @@
 {
 	"name": "functions",
 	"scripts": {
+		"fmt": "biome check --write --unsafe .",
 		"codegen": "orval",
+		"prebuild": "bun run codegen",
 		"build": "tsc",
 		"build:watch": "tsc --watch",
 		"serve": "bun run build && firebase emulators:start --only functions",

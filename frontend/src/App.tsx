@@ -3,7 +3,9 @@ import "./index.css";
 
 import { MantineProvider } from "@mantine/core";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Route, Routes } from "react-router";
 import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -18,7 +20,10 @@ export default function App() {
 	return (
 		<MantineProvider>
 			<QueryClientProvider client={queryClient}>
-				<Home />
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="*" element={<NotFound />} />
+				</Routes>
 			</QueryClientProvider>
 		</MantineProvider>
 	);

@@ -1,4 +1,5 @@
 import {
+	Anchor,
 	Box,
 	Button,
 	Container,
@@ -6,6 +7,7 @@ import {
 	Stack,
 	Text,
 	TextInput,
+	Title,
 } from "@mantine/core";
 import { useDebouncedState, useHotkeys } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons-react";
@@ -38,6 +40,23 @@ export default function Home() {
 
 	return (
 		<Container py="lg">
+			<Box mb="lg">
+				<Title order={1} size="h2">
+					MCP Search
+				</Title>
+				<Text>
+					Quickly search and browse MCP servers listed in the{" "}
+					<Anchor
+						href="https://registry.modelcontextprotocol.io"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						MCP Registry
+					</Anchor>{" "}
+					by keyword or category.
+				</Text>
+			</Box>
+
 			<Stack gap="sm">
 				<TextInput
 					ref={searchInputRef}

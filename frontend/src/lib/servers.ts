@@ -1,6 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import {
 	collection,
+	FieldPath,
 	getDocs,
 	limit,
 	type QueryConstraint,
@@ -30,7 +31,16 @@ const _listServers = async (
 		const tokens = _bigram(word);
 		acc.push(
 			...tokens.map((token) =>
-				where(`nameTokens.${token.toLowerCase()}`, "==", true),
+				where(
+					new FieldPath(
+						"_meta",
+						"io.modelcontextprotocol.registry/publisher-provided",
+						"nameTokens",
+						token.toLowerCase(),
+					),
+					"==",
+					true,
+				),
 			),
 		);
 		return acc;

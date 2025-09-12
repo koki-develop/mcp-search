@@ -4,6 +4,7 @@ import * as logger from "firebase-functions/logger";
 import { setGlobalOptions } from "firebase-functions/v2/options";
 import { onSchedule } from "firebase-functions/v2/scheduler";
 import { getV0Servers } from "./api.generated";
+import { bigram } from "./util";
 
 const apps = getApps();
 if (apps.length === 0) {
@@ -50,7 +51,18 @@ export const fetchMcpServers = onSchedule("0,30 * * * *", async () => {
 				logger.warn(`Server does not have id: ${JSON.stringify(server)}`);
 				continue;
 			}
-			batch.set(firestore.collection("servers_v0").doc(id), server);
+
+			const nameTokens = bigram(server.name).reduce(
+				(acc, token) => {
+					acc[token.toLowerCase()] = true;
+					return acc;
+				},
+				{} as Record<string, boolean>,
+			);
+			batch.set(firestore.collection("servers_v0").doc(id), {
+				...server,
+				nameTokens,
+			});
 			writeCount++;
 		}
 

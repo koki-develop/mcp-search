@@ -11,7 +11,7 @@ export default function CommandExample({ pkg }: CommandExampleProps) {
 
 	return (
 		<Group gap={6} wrap="nowrap" align="center">
-			<Code className="whitespace-nowrap overflow-x-auto text-sm" p="xs">
+			<Code className="whitespace-nowrap overflow-x-auto text-sm flex-1" p="xs">
 				$ {command}
 			</Code>
 			<CopyButton value={command} timeout={1000}>

@@ -10,6 +10,7 @@ import {
 } from "@mantine/core";
 import { IconExternalLink } from "@tabler/icons-react";
 import type { Package } from "../../../../lib/api.generated";
+import CommandExample from "./CommandExample";
 import { packageUrl } from "./utils";
 
 type ServerPackageListProps = {
@@ -52,6 +53,8 @@ export default function ServerPackageList({
 								) : (
 									<Text className="font-bold">{pkg.identifier}</Text>
 								)}
+
+								<CommandExample pkg={pkg} />
 							</Stack>
 
 							{/*Environment variables*/}

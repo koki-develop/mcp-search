@@ -36,9 +36,7 @@ export default function ServerRemoteList({ remotes }: ServerRemoteListProps) {
 								<Text size="sm" c="dimmed">
 									URL:
 								</Text>
-								<Code fz="sm" style={{ whiteSpace: "nowrap" }}>
-									{remote.url}
-								</Code>
+								<Code className="whitespace-nowrap text-sm">{remote.url}</Code>
 								<CopyButton value={remote.url} timeout={1000}>
 									{({ copied, copy }) => (
 										<ActionIcon size="xs" variant="transparent" onClick={copy}>
@@ -56,11 +54,11 @@ export default function ServerRemoteList({ remotes }: ServerRemoteListProps) {
 										{remote.headers.map((header) => (
 											<Box key={header.name}>
 												<Group gap={2}>
-													<Code fz="xs" fw="bold">
+													<Code className="text-xs font-bold">
 														{header.name}
 													</Code>
 													{header.is_required && (
-														<Text fw="bold" size="xs" c="red">
+														<Text className="font-bold" size="xs" c="red">
 															*
 														</Text>
 													)}

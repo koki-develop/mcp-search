@@ -1,2 +1,2 @@
-bun run --cwd frontend fmt
-bun run --cwd functions fmt
+(cd frontend && bunx lint-staged)
+(cd functions && bunx lint-staged)

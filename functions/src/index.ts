@@ -28,67 +28,73 @@ const firestore = getFirestore();
 // this will be the maximum concurrent request count.
 setGlobalOptions({ maxInstances: 10 });
 
-export const fetchMcpServers = onSchedule("0,30 * * * *", async () => {
-	logger.info("Starting fetchMcpServers function");
+export const fetchMcpServers = onSchedule(
+	{
+		schedule: "0,30 * * * *",
+		timeoutSeconds: 600,
+	},
+	async () => {
+		logger.info("Starting fetchMcpServers function");
 
-	let cursor: string | undefined;
-	do {
-		logger.info(`Fetching servers with cursor: ${cursor}`);
-		const response = await getV0Servers({ cursor, limit: 100 });
-		if (response.status !== 200) {
-			throw new Error(
-				`Failed to fetch servers(${response.status}): ${JSON.stringify(response.data)}`,
-			);
-		}
-		logger.info(`Fetched ${response.data.servers.length} servers`);
-
-		const batch = firestore.batch();
-		let writeCount = 0;
-		for (const server of response.data.servers) {
-			const id =
-				server._meta?.["io.modelcontextprotocol.registry/official"]?.id;
-			if (!id) {
-				logger.warn(`Server does not have id: ${JSON.stringify(server)}`);
-				continue;
-			}
-
-			if (
-				!server._meta?.["io.modelcontextprotocol.registry/official"]
-					?.is_latest ||
-				(server.status as unknown) === "deleted"
-			) {
-				batch.delete(firestore.collection("servers_v0").doc(id));
-			} else {
-				const nameTokens = bigram(server.name).reduce(
-					(acc, token) => {
-						acc[token.toLowerCase()] = true;
-						return acc;
-					},
-					{} as Record<string, boolean>,
+		let cursor: string | undefined;
+		do {
+			logger.info(`Fetching servers with cursor: ${cursor}`);
+			const response = await getV0Servers({ cursor, limit: 100 });
+			if (response.status !== 200) {
+				throw new Error(
+					`Failed to fetch servers(${response.status}): ${JSON.stringify(response.data)}`,
 				);
-
-				server._meta = {
-					...server._meta,
-					"io.modelcontextprotocol.registry/publisher-provided": {
-						nameTokens,
-					},
-				};
-
-				batch.set(firestore.collection("servers_v0").doc(id), server);
 			}
-			writeCount++;
-		}
+			logger.info(`Fetched ${response.data.servers.length} servers`);
 
-		if (writeCount > 0) {
-			await batch.commit();
-			logger.info(`Wrote ${writeCount} servers to Firestore.`);
-		} else {
-			logger.info("No servers to write, exiting loop.");
-		}
+			const batch = firestore.batch();
+			let writeCount = 0;
+			for (const server of response.data.servers) {
+				const id =
+					server._meta?.["io.modelcontextprotocol.registry/official"]?.id;
+				if (!id) {
+					logger.warn(`Server does not have id: ${JSON.stringify(server)}`);
+					continue;
+				}
 
-		await new Promise((resolve) => setTimeout(resolve, 1000)); // Sleep for 3 second to avoid rate limit
-		cursor = response.data.metadata?.next_cursor;
-	} while (cursor);
+				if (
+					!server._meta?.["io.modelcontextprotocol.registry/official"]
+						?.is_latest ||
+					(server.status as unknown) === "deleted"
+				) {
+					batch.delete(firestore.collection("servers_v0").doc(id));
+				} else {
+					const nameTokens = bigram(server.name).reduce(
+						(acc, token) => {
+							acc[token.toLowerCase()] = true;
+							return acc;
+						},
+						{} as Record<string, boolean>,
+					);
 
-	logger.info("Finished fetchMcpServers function");
-});
+					server._meta = {
+						...server._meta,
+						"io.modelcontextprotocol.registry/publisher-provided": {
+							nameTokens,
+						},
+					};
+
+					batch.set(firestore.collection("servers_v0").doc(id), server);
+				}
+				writeCount++;
+			}
+
+			if (writeCount > 0) {
+				await batch.commit();
+				logger.info(`Wrote ${writeCount} servers to Firestore.`);
+			} else {
+				logger.info("No servers to write, exiting loop.");
+			}
+
+			await new Promise((resolve) => setTimeout(resolve, 1000)); // Sleep for 3 second to avoid rate limit
+			cursor = response.data.metadata?.next_cursor;
+		} while (cursor);
+
+		logger.info("Finished fetchMcpServers function");
+	},
+);

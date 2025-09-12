@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.1.4](https://github.com/koki-develop/mcp-search/compare/v0.1.3...v0.1.4) (2025-09-12)
+
+
+### Bug Fixes
+
+* **ci:** Create frontend/.env ([03c3055](https://github.com/koki-develop/mcp-search/commit/03c3055fc33588350e1c5d42c13c8f85ba762e72))
+* **frontend:** Use _meta ([b8e24be](https://github.com/koki-develop/mcp-search/commit/b8e24bef15f6cdf6bfb72321882b435854e44666))
+* **functions:** fix ([6e21e67](https://github.com/koki-develop/mcp-search/commit/6e21e6782d08aeaf3e7e2124ffd09cfc3a3cbb67))
+* **functions:** Handle deleted server ([e6290e5](https://github.com/koki-develop/mcp-search/commit/e6290e56c3ef7f38a49aa43acf54d1d1f8f34c51))
+* **functions:** Set metadata to _meta ([ef4cf20](https://github.com/koki-develop/mcp-search/commit/ef4cf200c370140cb6bdfacc334182a63df520ff))
+
 ## [0.1.3](https://github.com/koki-develop/mcp-search/compare/v0.1.2...v0.1.3) (2025-09-12)
 
 

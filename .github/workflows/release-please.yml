@@ -27,7 +27,7 @@ jobs:
           release-type: node
 
   deploy:
-    timeout-minutes: 5
+    timeout-minutes: 20
     permissions:
       contents: read
     needs: release-please

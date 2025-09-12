@@ -3,6 +3,7 @@
   "version": "0.1.2",
   "private": true,
   "scripts": {
+    "prepare": "husky",
     "deploy": "firebase deploy --force"
   },
   "devDependencies": {

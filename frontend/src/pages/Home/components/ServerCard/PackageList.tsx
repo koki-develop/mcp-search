@@ -28,6 +28,7 @@ export default function ServerPackageList({
 					<Card key={pkg.identifier} withBorder padding="sm" radius="md">
 						<Stack gap="sm">
 							<Stack gap={4}>
+								{/*Badges*/}
 								<Group gap="xs" wrap="wrap">
 									{pkg.registry_type && (
 										<Badge variant="light" color="blue">
@@ -37,6 +38,7 @@ export default function ServerPackageList({
 									{pkg.version && <Badge variant="light">{pkg.version}</Badge>}
 								</Group>
 
+								{/*URL*/}
 								{url ? (
 									<Anchor
 										styles={{
@@ -59,6 +61,7 @@ export default function ServerPackageList({
 								)}
 							</Stack>
 
+							{/*Environment variables*/}
 							{pkg.environment_variables &&
 								pkg.environment_variables.length > 0 && (
 									<Box>

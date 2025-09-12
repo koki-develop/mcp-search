@@ -48,6 +48,7 @@ export default function ServerRemoteList({ remotes }: ServerRemoteListProps) {
 								</CopyButton>
 							</Group>
 
+							{/*Headers*/}
 							{remote.headers && remote.headers.length > 0 && (
 								<Box>
 									<Text c="dimmed">Headers</Text>

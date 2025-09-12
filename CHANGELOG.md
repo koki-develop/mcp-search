@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.3](https://github.com/koki-develop/mcp-search/compare/v0.1.2...v0.1.3) (2025-09-12)
+
+
+### Bug Fixes
+
+* Update timeout-minutes ([381fe2c](https://github.com/koki-develop/mcp-search/commit/381fe2ccbc655636d0fcf542dde0159213f21274))
+* Use Tailwind CSS ([#9](https://github.com/koki-develop/mcp-search/issues/9)) ([eae0081](https://github.com/koki-develop/mcp-search/commit/eae008179720e7e8e8754bfbb7991ae842b45dc5))
+
 ## [0.1.2](https://github.com/koki-develop/mcp-search/compare/v0.1.1...v0.1.2) (2025-09-12)
 
 

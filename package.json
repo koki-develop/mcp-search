@@ -7,5 +7,9 @@
   },
   "devDependencies": {
     "firebase-tools": "14.16.0"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "4.1.13",
+    "tailwindcss": "4.1.13"
   }
 }

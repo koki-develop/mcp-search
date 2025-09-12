@@ -52,7 +52,11 @@ export const fetchMcpServers = onSchedule("0,30 * * * *", async () => {
 				continue;
 			}
 
-			if ((server.status as unknown) === "deleted") {
+			if (
+				!server._meta?.["io.modelcontextprotocol.registry/official"]
+					?.is_latest ||
+				(server.status as unknown) === "deleted"
+			) {
 				batch.delete(firestore.collection("servers_v0").doc(id));
 			} else {
 				const nameTokens = bigram(server.name).reduce(

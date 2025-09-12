@@ -62,10 +62,24 @@ export const fetchMcpServers = onSchedule("0,30 * * * *", async () => {
 					},
 					{} as Record<string, boolean>,
 				);
-				batch.set(firestore.collection("servers_v0").doc(id), {
-					...server,
-					nameTokens,
-				});
+				const packageRegistryTypes =
+					server.packages?.map((pkg) => pkg.registry_type).filter(Boolean) ??
+					[];
+				const remoteTransportTypes = server.remotes
+					// biome-ignore lint/suspicious/noExplicitAny: ignore
+					?.map((remote) => remote.transport_type ?? (remote as any).type)
+					.filter(Boolean);
+
+				server._meta = {
+					...server._meta,
+					"io.modelcontextprotocol.registry/publisher-provided": {
+						nameTokens,
+						packageRegistryTypes,
+						remoteTransportTypes,
+					},
+				};
+
+				batch.set(firestore.collection("servers_v0").doc(id), server);
 			}
 			writeCount++;
 		}

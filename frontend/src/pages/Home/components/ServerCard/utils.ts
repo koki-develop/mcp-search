@@ -9,6 +9,8 @@ export function packageUrl(pkg: Package): string | undefined {
 			return `https://www.npmjs.com/package/${pkg.identifier}`;
 		case "pypi":
 			return `https://pypi.org/project/${pkg.identifier}`;
+		case "nuget":
+      return `https://www.nuget.org/packages/${pkg.identifier}`;
 		// TODO: support more registries
 	}
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/koki-develop/mcp-search/compare/v0.1.1...v0.1.2) (2025-09-12)
+
+
+### Bug Fixes
+
+* **functions:** Update scripts ([596385f](https://github.com/koki-develop/mcp-search/commit/596385fe4ad3fe91ad7c3bd9f8876888ea3d8e83))
+
 ## [0.1.1](https://github.com/koki-develop/mcp-search/compare/v0.1.0...v0.1.1) (2025-09-12)
 
 

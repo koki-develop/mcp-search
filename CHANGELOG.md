@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/koki-develop/mcp-search/compare/v0.1.0...v0.1.1) (2025-09-12)
+
+
+### Bug Fixes
+
+* Set prebuild script ([d956655](https://github.com/koki-develop/mcp-search/commit/d9566558e7cbe68d6d428e736ca9d4905dcf3605))
+
 ## [0.1.0](https://github.com/koki-develop/mcp-search/compare/v0.0.1...v0.1.0) (2025-09-12)
 
 

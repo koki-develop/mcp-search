@@ -38,6 +38,24 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/setup
+      - name: Create frontend/.env
+        env:
+          VITE_FIREBASE_API_KEY: ${{ vars.VITE_FIREBASE_API_KEY }}
+          VITE_FIREBASE_AUTH_DOMAIN: ${{ vars.VITE_FIREBASE_AUTH_DOMAIN }}
+          VITE_FIREBASE_PROJECT_ID: ${{ vars.VITE_FIREBASE_PROJECT_ID }}
+          VITE_FIREBASE_STORAGE_BUCKET: ${{ vars.VITE_FIREBASE_STORAGE_BUCKET }}
+          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ vars.VITE_FIREBASE_MESSAGING_SENDER_ID }}
+          VITE_FIREBASE_APP_ID: ${{ vars.VITE_FIREBASE_APP_ID }}
+        run: |
+          {
+            echo "VITE_FIREBASE_API_KEY=\"${VITE_FIREBASE_API_KEY}\""
+            echo "VITE_FIREBASE_AUTH_DOMAIN=\"${VITE_FIREBASE_AUTH_DOMAIN}\""
+            echo "VITE_FIREBASE_PROJECT_ID=\"${VITE_FIREBASE_PROJECT_ID}\""
+            echo "VITE_FIREBASE_STORAGE_BUCKET=\"${VITE_FIREBASE_STORAGE_BUCKET}\""
+            echo "VITE_FIREBASE_MESSAGING_SENDER_ID=\"${VITE_FIREBASE_MESSAGING_SENDER_ID}\""
+            echo "VITE_FIREBASE_APP_ID=\"${VITE_FIREBASE_APP_ID}\""
+          } > frontend/.env
+
       - run: bunx firebase deploy --token="${FIREBASE_TOKEN}"
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

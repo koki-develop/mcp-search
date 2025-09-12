@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.3.0](https://github.com/koki-develop/mcp-search/compare/v0.2.0...v0.3.0) (2025-09-12)
+
+
+### Features
+
+* **frontend:** Install react-router and add not found page ([#13](https://github.com/koki-develop/mcp-search/issues/13)) ([62bbce7](https://github.com/koki-develop/mcp-search/commit/62bbce71825dc3774ac62f779e862aff6c340d36))
+* **frontend:** Show packages/remotes count ([da76626](https://github.com/koki-develop/mcp-search/commit/da7662604a88335270e7693aacdc99cc166e3153))
+
+
+### Bug Fixes
+
+* **frontend:** Enable react-compiler ([22aba05](https://github.com/koki-develop/mcp-search/commit/22aba05daaf1935a0fc04bbc9ce999391f8a21ef))
+* **frontend:** fix style ([c89d648](https://github.com/koki-develop/mcp-search/commit/c89d648bef96620540bdd4c725d86c2ed07820b4))
+
 ## [0.2.0](https://github.com/koki-develop/mcp-search/compare/v0.1.4...v0.2.0) (2025-09-12)
 
 

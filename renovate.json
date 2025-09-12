@@ -1,4 +1,26 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>koki-develop/renovate-config"]
+  "extends": ["github>koki-develop/renovate-config"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/(^|/)(frontend|functions)/orval\\.config\\.ts$/"
+      ],
+      "matchStrings": [
+        "https://raw\\.githubusercontent\\.com/modelcontextprotocol/registry/(?:refs/tags/)?(?<currentValue>v\\d+\\.\\d+\\.\\d+)/docs/reference/api/openapi\\.yaml"
+      ],
+      "depNameTemplate": "modelcontextprotocol/registry",
+      "datasourceTemplate": "github-tags",
+      "versioningTemplate": "semver-coerced"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["github-tags"],
+      "matchPackageNames": ["modelcontextprotocol/registry"],
+      "groupName": "MCP Registry OpenAPI",
+      "groupSlug": "mcp-registry-orval"
+    }
+  ]
 }

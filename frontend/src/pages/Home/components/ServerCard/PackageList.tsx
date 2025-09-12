@@ -41,14 +41,7 @@ export default function ServerPackageList({
 								{/*URL*/}
 								{url ? (
 									<Anchor
-										styles={{
-											root: {
-												display: "inline-flex",
-												alignItems: "center",
-												gap: 4,
-											},
-										}}
-										fw="bold"
+										className="inline-flex items-center gap-1 font-bold"
 										href={url}
 										target="_blank"
 										rel="noreferrer"
@@ -57,7 +50,7 @@ export default function ServerPackageList({
 										<IconExternalLink size={16} />
 									</Anchor>
 								) : (
-									<Text fw="bold">{pkg.identifier}</Text>
+									<Text className="font-bold">{pkg.identifier}</Text>
 								)}
 							</Stack>
 
@@ -70,11 +63,11 @@ export default function ServerPackageList({
 											{pkg.environment_variables.map((env) => (
 												<Box key={env.name}>
 													<Group gap={2}>
-														<Code fz="xs" fw="bold">
+														<Code className="text-xs font-bold">
 															{env.name}
 														</Code>
 														{env.is_required && (
-															<Text fw="bold" size="xs" c="red">
+															<Text className="font-bold" size="xs" c="red">
 																*
 															</Text>
 														)}

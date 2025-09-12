@@ -29,13 +29,12 @@ export default function ServerCard({ server }: ServerCardProps) {
 		<>
 			<Card
 				component="button"
-				ta="left"
-				styles={{ root: { cursor: "pointer" } }}
+				className="cursor-pointer text-left"
 				withBorder
 				shadow="xs"
 				onClick={open}
 			>
-				<Text style={{ wordBreak: "break-all" }} size="xl" fw="bold">
+				<Text className="break-all font-bold" size="xl">
 					{server.name}
 				</Text>
 				<Text lineClamp={2} mb="xs">
@@ -67,7 +66,7 @@ export default function ServerCard({ server }: ServerCardProps) {
 								)}
 							</Text>
 						)}
-						<Text size="xl" fw="bold" style={{ wordBreak: "break-all" }}>
+						<Text size="xl" className="break-all font-bold">
 							{server.name}
 						</Text>
 						<Group gap="xs" wrap="wrap">

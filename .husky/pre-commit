@@ -1,0 +1,2 @@
+bun run --cwd frontend fmt
+bun run --cwd functions fmt

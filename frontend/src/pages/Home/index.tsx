@@ -69,7 +69,7 @@ export default function Home() {
 				/>
 
 				{!isFetching && servers.length === 0 && (
-					<Text ta="center">No servers found.</Text>
+					<Text className="text-center">No servers found.</Text>
 				)}
 
 				{servers.length > 0 && (
@@ -81,13 +81,13 @@ export default function Home() {
 				)}
 
 				{isFetching && (
-					<Box ta="center">
+					<Box className="text-center">
 						<Loader />
 					</Box>
 				)}
 
 				{!isFetching && hasNextPage && (
-					<Box ta="center">
+					<Box className="text-center">
 						<Button onClick={() => fetchNextPage()}>Load More</Button>
 					</Box>
 				)}

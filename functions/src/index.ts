@@ -52,17 +52,21 @@ export const fetchMcpServers = onSchedule("0,30 * * * *", async () => {
 				continue;
 			}
 
-			const nameTokens = bigram(server.name).reduce(
-				(acc, token) => {
-					acc[token.toLowerCase()] = true;
-					return acc;
-				},
-				{} as Record<string, boolean>,
-			);
-			batch.set(firestore.collection("servers_v0").doc(id), {
-				...server,
-				nameTokens,
-			});
+			if ((server.status as unknown) === "deleted") {
+				batch.delete(firestore.collection("servers_v0").doc(id));
+			} else {
+				const nameTokens = bigram(server.name).reduce(
+					(acc, token) => {
+						acc[token.toLowerCase()] = true;
+						return acc;
+					},
+					{} as Record<string, boolean>,
+				);
+				batch.set(firestore.collection("servers_v0").doc(id), {
+					...server,
+					nameTokens,
+				});
+			}
 			writeCount++;
 		}
 

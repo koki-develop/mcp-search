@@ -10,7 +10,7 @@ export function packageUrl(pkg: Package): string | undefined {
 		case "pypi":
 			return `https://pypi.org/project/${pkg.identifier}`;
 		case "nuget":
-      return `https://www.nuget.org/packages/${pkg.identifier}`;
+			return `https://www.nuget.org/packages/${pkg.identifier}`;
 		// TODO: support more registries
 	}
 

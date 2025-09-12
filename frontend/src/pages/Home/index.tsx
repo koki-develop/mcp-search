@@ -45,15 +45,15 @@ export default function Home() {
 					MCP Search
 				</Title>
 				<Text>
-					Quickly search and browse MCP servers listed in the{" "}
+					Quickly search and browse MCP servers registered with the{" "}
 					<Anchor
 						href="https://registry.modelcontextprotocol.io"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
 						MCP Registry
-					</Anchor>{" "}
-					by keyword or category.
+					</Anchor>
+					.
 				</Text>
 			</Box>
 

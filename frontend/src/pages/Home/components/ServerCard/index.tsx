@@ -24,6 +24,15 @@ export type ServerCardProps = {
 export default function ServerCard({ server }: ServerCardProps) {
 	const [opened, { open, close }] = useDisclosure(false);
 	const meta = server._meta?.["io.modelcontextprotocol.registry/official"];
+	const metaItems = (() => {
+		const items = [server.version];
+		if (meta) items.push(dayjs(meta.updated_at).fromNow());
+		if (server.packages && server.packages.length > 0)
+			items.push(`${server.packages.length} packages`);
+		if (server.remotes && server.remotes.length > 0)
+			items.push(`${server.remotes.length} remotes`);
+		return items;
+	})();
 
 	return (
 		<>
@@ -43,7 +52,7 @@ export default function ServerCard({ server }: ServerCardProps) {
 
 				{meta && (
 					<Text c="dimmed" size="sm">
-						{server.version} • Updated {dayjs(meta.updated_at).fromNow()}
+						{metaItems.join(" • ")}
 					</Text>
 				)}
 			</Card>

@@ -11,7 +11,6 @@ import {
 } from "firebase/firestore";
 import type { ServerDetail } from "./api.generated";
 import { firestore } from "./firebase";
-import { bigram } from "./util";
 
 export type Server = ServerDetail & { id: string };
 
@@ -28,7 +27,7 @@ const _listServers = async (
 
 	const words = params.keyword.split(/\s+/).filter((word) => word.length > 0);
 	const nameTokensConstraints = words.reduce((acc, word) => {
-		const tokens = bigram(word);
+		const tokens = _bigram(word);
 		acc.push(
 			...tokens.map((token) =>
 				where(`nameTokens.${token.toLowerCase()}`, "==", true),
@@ -72,4 +71,12 @@ export const useServers = (params: UseServersParams) => {
 		select: (data) => data.pages.flatMap((page) => page.servers),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
+};
+
+const _bigram = (str: string): string[] => {
+	const bigrams: string[] = [];
+	for (let i = 0; i < str.length - 1; i++) {
+		bigrams.push(str.slice(i, i + 2));
+	}
+	return bigrams;
 };

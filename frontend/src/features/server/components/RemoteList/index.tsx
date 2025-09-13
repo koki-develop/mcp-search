@@ -16,8 +16,7 @@ export default function ServerRemoteList({ remotes }: ServerRemoteListProps) {
 							{/* Badges */}
 							<Group gap="xs" wrap="wrap">
 								<Badge variant="light">
-									{/* biome-ignore lint/suspicious/noExplicitAny: ignore */}
-									{remote.transport_type ?? (remote as any).type}
+									{remote.transport_type ?? remote.type}
 								</Badge>
 							</Group>
 

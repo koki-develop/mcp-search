@@ -65,7 +65,7 @@ export default function Home() {
 					onChange={(e) => setKeyword(e.currentTarget.value)}
 				/>
 
-				<Text className="pl-2" c="dimmed" size="sm">
+				<Text className="pl-1" c="dimmed" size="sm">
 					{isFetching || serversCount === undefined
 						? "Loading..."
 						: serversCount === 0

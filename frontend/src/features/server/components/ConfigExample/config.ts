@@ -88,7 +88,13 @@ export function buildPackageConfigExample(pkg: Package): Config | null {
 				return ["-y"];
 			}
 			if (command === "docker") {
-				return ["run", "-i", "--rm"];
+				const base = ["run", "-i", "--rm"];
+				const requiredEnvs =
+					pkg.environment_variables?.filter((env) => env.is_required) ?? [];
+				if (requiredEnvs.length > 0) {
+					base.push(...requiredEnvs.map((env) => `-e ${env.name}`));
+				}
+				return base;
 			}
 		}
 		return renderArgs(args);

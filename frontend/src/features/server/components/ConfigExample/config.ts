@@ -81,10 +81,21 @@ export function buildPackageConfigExample(pkg: Package): Config | null {
 		(pkg.registry_type ? RUNTIME_FALLBACK[pkg.registry_type] : undefined);
 	if (!command) return null;
 
+	const runtimeArgs = (() => {
+		const args = pkg.runtime_arguments?.filter((arg) => arg.is_required) ?? [];
+		if (args.length === 0) {
+			if (command === "npx") {
+				return ["-y"];
+			}
+			if (command === "docker") {
+				return ["run", "-i", "--rm"];
+			}
+		}
+		return renderArgs(args);
+	})();
+
 	const args = [
-		...renderArgs(
-			pkg.runtime_arguments?.filter((arg) => arg.is_required) ?? [],
-		),
+		...runtimeArgs,
 		packageIdentifier(pkg),
 		...renderArgs(
 			pkg.package_arguments?.filter((arg) => arg.is_required) ?? [],

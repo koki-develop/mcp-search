@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.8.0](https://github.com/koki-develop/mcp-search/compare/v0.7.1...v0.8.0) (2025-09-13)
+
+
+### Features
+
+* **frontend:** Show servers count ([b6a343f](https://github.com/koki-develop/mcp-search/commit/b6a343fabd1aadbaa2cd77174e0eaf99c3d0c230))
+
+
+### Bug Fixes
+
+* **frontend:** fix ([0e0bcbf](https://github.com/koki-develop/mcp-search/commit/0e0bcbf82a6acf6dee11c451189ec7631c2e3214))
+* **frontend:** Remove gcTime option ([e07b70c](https://github.com/koki-develop/mcp-search/commit/e07b70ce891ed86bfb6b660bd4252d6b7fe45e52))
+
 ## [0.7.1](https://github.com/koki-develop/mcp-search/compare/v0.7.0...v0.7.1) (2025-09-13)
 
 

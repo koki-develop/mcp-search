@@ -31,7 +31,7 @@ describe("buildPackageConfigExample", () => {
 			json: {
 				type: "stdio",
 				command: "npx",
-				args: ["example/pkg@1.2.3"],
+				args: ["-y", "example/pkg@1.2.3"],
 				env: undefined,
 			},
 		});
@@ -89,7 +89,7 @@ describe("buildPackageConfigExample", () => {
 			json: {
 				type: "stdio",
 				command: "docker",
-				args: ["org/image:1.2.3"],
+				args: ["run", "-i", "--rm", "org/image:1.2.3"],
 				env: undefined,
 			},
 		});
@@ -108,7 +108,7 @@ describe("buildPackageConfigExample", () => {
 			json: {
 				type: "stdio",
 				command: "npx",
-				args: ["example/pkg@1.2.3"],
+				args: ["-y", "example/pkg@1.2.3"],
 				env: {
 					API_KEY: "<secret>",
 					LOG_LEVEL: "<value>",
@@ -128,7 +128,7 @@ describe("buildPackageConfigExample", () => {
 			json: {
 				type: "stdio",
 				command: "npx",
-				args: ["example/pkg@1.2.3", "--port=<value>", "--flag=<value>"],
+				args: ["-y", "example/pkg@1.2.3", "--port=<value>", "--flag=<value>"],
 				env: undefined,
 			},
 		});
@@ -145,7 +145,7 @@ describe("buildPackageConfigExample", () => {
 			json: {
 				type: "stdio",
 				command: "npx",
-				args: ["example/pkg@1.2.3", "<value>", "<value>"],
+				args: ["-y", "example/pkg@1.2.3", "<value>", "<value>"],
 				env: undefined,
 			},
 		});
@@ -190,7 +190,7 @@ describe("buildPackageConfigExample", () => {
 			json: {
 				type: "stdio",
 				command: "npx",
-				args: ["example/pkg@1.2.3", "<value>"],
+				args: ["-y", "example/pkg@1.2.3", "<value>"],
 				env: undefined,
 			},
 		});
@@ -206,7 +206,7 @@ describe("buildPackageConfigExample", () => {
 			json: {
 				type: "stdio",
 				command: "npx",
-				args: ["example/pkg@1.2.3", "<filepath>"],
+				args: ["-y", "example/pkg@1.2.3", "<filepath>"],
 				env: undefined,
 			},
 		});
@@ -222,7 +222,7 @@ describe("buildPackageConfigExample", () => {
 			json: {
 				type: "stdio",
 				command: "npx",
-				args: ["example/pkg@1.2.3", "-p=<value>"],
+				args: ["-y", "example/pkg@1.2.3", "-p=<value>"],
 				env: undefined,
 			},
 		});
@@ -243,7 +243,7 @@ describe("buildPackageConfigExample", () => {
 			json: {
 				type: "stdio",
 				command: "npx",
-				args: ["example/pkg@1.2.3", "--mode=<value>"],
+				args: ["-y", "example/pkg@1.2.3", "--mode=<value>"],
 				env: undefined,
 			},
 		});
@@ -264,7 +264,7 @@ describe("buildPackageConfigExample", () => {
 			json: {
 				type: "stdio",
 				command: "npx",
-				args: ["example/pkg@1.2.3", "--arg=<value>"],
+				args: ["-y", "example/pkg@1.2.3", "--arg=<value>"],
 				env: undefined,
 			},
 		});
@@ -352,7 +352,7 @@ describe("buildPackageConfigExample", () => {
 			json: {
 				type: "stdio",
 				command: "npx",
-				args: ["example/pkg@1.2.3"],
+				args: ["-y", "example/pkg@1.2.3"],
 				env: {
 					TOKEN: "<value>",
 					SECRET: "<secret>",
@@ -371,7 +371,7 @@ describe("buildPackageConfigExample", () => {
 			json: {
 				type: "stdio",
 				command: "npx",
-				args: ["example/pkg@1.2.3", "<value>"],
+				args: ["-y", "example/pkg@1.2.3", "<value>"],
 				env: undefined,
 			},
 		});
@@ -390,7 +390,7 @@ describe("buildPackageConfigExample", () => {
 			json: {
 				type: "stdio",
 				command: "npx",
-				args: ["example/pkg@1.2.3"],
+				args: ["-y", "example/pkg@1.2.3"],
 				env: undefined,
 			},
 		});
@@ -407,7 +407,7 @@ describe("buildPackageConfigExample", () => {
 			json: {
 				type: "stdio",
 				command: "npx",
-				args: ["example/pkg@1.2.3"],
+				args: ["-y", "example/pkg@1.2.3"],
 				env: undefined,
 			},
 		});

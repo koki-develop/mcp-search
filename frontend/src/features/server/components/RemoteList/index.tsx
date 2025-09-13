@@ -1,6 +1,7 @@
-import { Badge, Box, Card, Code, Group, Stack, Text } from "@mantine/core";
+import { Badge, Box, Card, Group, Stack, Text } from "@mantine/core";
 import type { Remote } from "../../lib/types";
 import ConfigExample from "../ConfigExample";
+import KeyValue from "../KeyValue";
 
 export type ServerRemoteListProps = {
 	remotes: Remote[];
@@ -27,25 +28,7 @@ export default function ServerRemoteList({ remotes }: ServerRemoteListProps) {
 							{remote.headers && remote.headers.length > 0 && (
 								<Box>
 									<Text c="dimmed">Headers</Text>
-									<Group gap={6}>
-										{remote.headers.map((header) => (
-											<Box key={header.name}>
-												<Group gap={2}>
-													<Code className="text-xs font-bold">
-														{header.name}
-													</Code>
-													{header.is_required && (
-														<Text className="font-bold" size="xs" c="red">
-															*
-														</Text>
-													)}
-												</Group>
-												<Text size="sm" c="dark">
-													{header.description}
-												</Text>
-											</Box>
-										))}
-									</Group>
+									<KeyValue kvs={remote.headers} />
 								</Box>
 							)}
 						</Stack>

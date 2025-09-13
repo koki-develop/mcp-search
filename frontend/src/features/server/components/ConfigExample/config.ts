@@ -114,7 +114,9 @@ export function buildPackageConfigExample(pkg: Package): Config | null {
 				json: {
 					type: "sse",
 					url: pkg.transport.url,
-					headers: renderKeyValue(pkg.transport.headers ?? []),
+					headers: renderKeyValue(
+						pkg.transport.headers?.filter((header) => header.is_required) ?? [],
+					),
 				},
 			};
 		case "streamable-http":
@@ -130,7 +132,9 @@ export function buildPackageConfigExample(pkg: Package): Config | null {
 				json: {
 					type: "http",
 					url: pkg.transport.url,
-					headers: renderKeyValue(pkg.transport.headers ?? []),
+					headers: renderKeyValue(
+						pkg.transport.headers?.filter((header) => header.is_required) ?? [],
+					),
 				},
 			};
 	}

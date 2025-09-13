@@ -1,16 +1,8 @@
-import {
-	Anchor,
-	Badge,
-	Box,
-	Card,
-	Code,
-	Group,
-	Stack,
-	Text,
-} from "@mantine/core";
+import { Anchor, Badge, Box, Card, Group, Stack, Text } from "@mantine/core";
 import { IconExternalLink } from "@tabler/icons-react";
 import type { Package } from "../../lib/types";
 import ConfigExample from "../ConfigExample";
+import KeyValue from "../KeyValue";
 
 function packageUrl(pkg: Package): string | undefined {
 	if (!pkg.identifier) return undefined;
@@ -78,25 +70,17 @@ export default function ServerPackageList({
 								pkg.environment_variables.length > 0 && (
 									<Box>
 										<Text c="dimmed">Environment variables</Text>
-										<Stack gap={6}>
-											{pkg.environment_variables.map((env) => (
-												<Box key={env.name}>
-													<Group gap={2}>
-														<Code className="text-xs font-bold">
-															{env.name}
-														</Code>
-														{env.is_required && (
-															<Text className="font-bold" size="xs" c="red">
-																*
-															</Text>
-														)}
-													</Group>
-													<Text size="sm" c="dark">
-														{env.description}
-													</Text>
-												</Box>
-											))}
-										</Stack>
+										<KeyValue kvs={pkg.environment_variables} />
+									</Box>
+								)}
+
+							{/*Headers*/}
+							{pkg.transport.type !== "stdio" &&
+								pkg.transport.headers &&
+								pkg.transport.headers.length > 0 && (
+									<Box>
+										<Text c="dimmed">Headers</Text>
+										<KeyValue kvs={pkg.transport.headers} />
 									</Box>
 								)}
 						</Stack>

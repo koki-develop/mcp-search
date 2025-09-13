@@ -9,7 +9,7 @@ import {
 	Text,
 } from "@mantine/core";
 import { IconExternalLink } from "@tabler/icons-react";
-import type { Package } from "../../lib/api.generated";
+import type { Package } from "../../lib/types";
 import ConfigExample from "../ConfigExample";
 
 function packageUrl(pkg: Package): string | undefined {

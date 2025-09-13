@@ -11,7 +11,7 @@ import {
 	where,
 } from "firebase/firestore";
 import { firestore } from "../../../lib/firebase";
-import type { ServerDetail } from "./api.generated";
+import type { ServerDetail } from "./types";
 
 export type Server = ServerDetail & { id: string };
 

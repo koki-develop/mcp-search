@@ -3,7 +3,7 @@ import type {
 	InputFormat,
 	KeyValueInput,
 	Package,
-} from "../../lib/api.generated";
+} from "../../lib/types";
 
 const RUNTIME_FALLBACK: Record<string, string> = {
 	npm: "npx",
@@ -12,11 +12,37 @@ const RUNTIME_FALLBACK: Record<string, string> = {
 	oci: "docker",
 };
 
-export type Config = {
-	command: string;
-	args: string[];
-	env?: Record<string, string>;
+export type StdioConfig = {
+	type: "stdio";
+	json: {
+		type: "stdio";
+		command: string;
+		args: string[];
+		env?: Record<string, string>;
+	};
 };
+
+export type SseConfig = {
+	type: "sse";
+	command: string;
+	json: {
+		type: "sse";
+		url: string;
+		headers?: Record<string, string>;
+	};
+};
+
+export type HttpConfig = {
+	type: "http";
+	command: string;
+	json: {
+		type: "http";
+		url: string;
+		headers?: Record<string, string>;
+	};
+};
+
+export type Config = StdioConfig | SseConfig | HttpConfig;
 
 export function buildConfigExample(pkg: Package): Config | null {
 	if (!pkg || !pkg.identifier || !pkg.version) return null;
@@ -27,21 +53,59 @@ export function buildConfigExample(pkg: Package): Config | null {
 		(pkg.registry_type ? RUNTIME_FALLBACK[pkg.registry_type] : undefined);
 	if (!command) return null;
 
-	return {
-		command,
-		args: [
-			...renderArgs(
-				pkg.runtime_arguments?.filter((arg) => arg.is_required) ?? [],
-			),
-			packageIdentifier(pkg),
-			...renderArgs(
-				pkg.package_arguments?.filter((arg) => arg.is_required) ?? [],
-			),
-		].map(quoteIfNeeded),
-		env: renderEnv(
-			pkg.environment_variables?.filter((env) => env.is_required) ?? [],
+	const args = [
+		...renderArgs(
+			pkg.runtime_arguments?.filter((arg) => arg.is_required) ?? [],
 		),
-	};
+		packageIdentifier(pkg),
+		...renderArgs(
+			pkg.package_arguments?.filter((arg) => arg.is_required) ?? [],
+		),
+	].map(quoteIfNeeded);
+
+	const env = renderKeyValue(
+		pkg.environment_variables?.filter((env) => env.is_required) ?? [],
+	);
+
+	switch (pkg.transport.type) {
+		case "stdio":
+			return {
+				type: "stdio",
+				json: { type: "stdio", command, args, env },
+			};
+		case "sse":
+			return {
+				type: "sse",
+				command: [
+					...(env ? Object.entries(env).map(([k, v]) => `${k}=${v}`) : []),
+					command,
+					...args,
+				]
+					.map(quoteIfNeeded)
+					.join(" "),
+				json: {
+					type: "sse",
+					url: pkg.transport.url,
+					headers: renderKeyValue(pkg.transport.headers ?? []),
+				},
+			};
+		case "streamable-http":
+			return {
+				type: "http",
+				command: [
+					...(env ? Object.entries(env).map(([k, v]) => `${k}=${v}`) : []),
+					command,
+					...args,
+				]
+					.map(quoteIfNeeded)
+					.join(" "),
+				json: {
+					type: "http",
+					url: pkg.transport.url,
+					headers: renderKeyValue(pkg.transport.headers ?? []),
+				},
+			};
+	}
 }
 
 function packageIdentifier(pkg: Package): string {
@@ -62,7 +126,9 @@ function packageIdentifier(pkg: Package): string {
 	}
 }
 
-function renderEnv(envs: KeyValueInput[]): Record<string, string> | undefined {
+function renderKeyValue(
+	envs: KeyValueInput[],
+): Record<string, string> | undefined {
 	if (envs.length === 0) return undefined;
 
 	return envs.reduce(

@@ -45,6 +45,7 @@ export default function ServerPackageList({
 										</Badge>
 									)}
 									{pkg.version && <Badge variant="light">{pkg.version}</Badge>}
+									<Badge variant="light">{pkg.transport.type}</Badge>
 								</Group>
 
 								{/*Identifier*/}

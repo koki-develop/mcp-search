@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.1](https://github.com/koki-develop/mcp-search/compare/v0.7.0...v0.7.1) (2025-09-13)
+
+
+### Bug Fixes
+
+* **frontend:** Fallback docker env ([cea0e2e](https://github.com/koki-develop/mcp-search/commit/cea0e2e0a23588ea6779d41575261ea0c65e0f14))
+* **frontend:** Fallback runtime arguments ([6e60c56](https://github.com/koki-develop/mcp-search/commit/6e60c56991789efcc445c8f30d3769a4fe55549c))
+
 ## [0.7.0](https://github.com/koki-develop/mcp-search/compare/v0.6.0...v0.7.0) (2025-09-13)
 
 

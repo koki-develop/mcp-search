@@ -29,9 +29,13 @@ export default function ServerCard({ server }: ServerCardProps) {
 		const items = [server.version];
 		if (meta) items.push(dayjs(meta.updated_at).fromNow());
 		if (server.packages && server.packages.length > 0)
-			items.push(`${server.packages.length} packages`);
+			items.push(
+				`${server.packages.length} package${server.packages.length > 1 ? "s" : ""}`,
+			);
 		if (server.remotes && server.remotes.length > 0)
-			items.push(`${server.remotes.length} remotes`);
+			items.push(
+				`${server.remotes.length} remote${server.remotes.length > 1 ? "s" : ""}`,
+			);
 		return items;
 	})();
 

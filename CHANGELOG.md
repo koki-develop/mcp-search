@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.6.0](https://github.com/koki-develop/mcp-search/compare/v0.5.0...v0.6.0) (2025-09-13)
+
+
+### Features
+
+* **frontend:** Show config example ([fa89c46](https://github.com/koki-develop/mcp-search/commit/fa89c46e10533e3d983d7a036cd3bec8fdcbcc08))
+* **frontend:** Show remote config example ([ba655a3](https://github.com/koki-develop/mcp-search/commit/ba655a3ec23952b583fc48778b581502d63c2d6c))
+* **frontend:** Support multiple transport types in config example ([5be20c6](https://github.com/koki-develop/mcp-search/commit/5be20c6671bb4f827f1db1a10b333ac1ed4d491b))
+
+
+### Bug Fixes
+
+* **frontend:** fix ([43dc393](https://github.com/koki-develop/mcp-search/commit/43dc3932153eaa2ce12064053d31b309f950f456))
+* **frontend:** fix ([7ea9824](https://github.com/koki-develop/mcp-search/commit/7ea9824e78feda701b61fec0b03a3a420b3db33c))
+
 ## [0.5.0](https://github.com/koki-develop/mcp-search/compare/v0.4.0...v0.5.0) (2025-09-13)
 
 

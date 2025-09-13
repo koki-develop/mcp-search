@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.4.0](https://github.com/koki-develop/mcp-search/compare/v0.3.0...v0.4.0) (2025-09-13)
+
+
+### Features
+
+* **frontend:** Add footer ([f451e2a](https://github.com/koki-develop/mcp-search/commit/f451e2acbb7c44cca8877426caf1aea150f0ef26))
+* **frontend:** Set favicon ([bf4f647](https://github.com/koki-develop/mcp-search/commit/bf4f6475fa587cc3b64e0cc749aa77f00fb3fe5b))
+
+
+### Bug Fixes
+
+* **frontend:** Fix drawer header style ([50735cc](https://github.com/koki-develop/mcp-search/commit/50735cc85bc1878b0dd6fe240c2440f2d76b253a))
+* **frontend:** fix style ([2f222ca](https://github.com/koki-develop/mcp-search/commit/2f222ca3d0391fa8b3bc3965c32e2d08dca6bff0))
+
 ## [0.3.0](https://github.com/koki-develop/mcp-search/compare/v0.2.0...v0.3.0) (2025-09-12)
 
 

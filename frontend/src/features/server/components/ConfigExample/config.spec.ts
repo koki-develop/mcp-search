@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import type { Argument, KeyValueInput, Package } from "../../lib/api.generated";
-import { buildCommandExample } from "./command";
+import { buildConfigExample } from "./config";
 
 const basePkg = (over: Partial<Package> = {}): Package => ({
 	identifier: "example/pkg",
@@ -10,20 +10,24 @@ const basePkg = (over: Partial<Package> = {}): Package => ({
 	...over,
 });
 
-describe("buildCommandExample", () => {
+describe("buildConfigExample", () => {
 	it("returns null for missing identifier/version or mcpb", () => {
-		expect(buildCommandExample(basePkg({ identifier: undefined }))).toBeNull();
-		expect(buildCommandExample(basePkg({ version: undefined }))).toBeNull();
-		expect(buildCommandExample(basePkg({ registry_type: "mcpb" }))).toBeNull();
+		expect(buildConfigExample(basePkg({ identifier: undefined }))).toBeNull();
+		expect(buildConfigExample(basePkg({ version: undefined }))).toBeNull();
+		expect(buildConfigExample(basePkg({ registry_type: "mcpb" }))).toBeNull();
 	});
 
-	it("builds npx command with -y and package@version", () => {
-		const cmd = buildCommandExample(basePkg());
-		expect(cmd).toEqual("npx -y example/pkg@1.2.3");
+	it("builds npx command with package@version", () => {
+		const cmd = buildConfigExample(basePkg());
+		expect(cmd).toEqual({
+			command: "npx",
+			args: ["example/pkg@1.2.3"],
+			env: undefined,
+		});
 	});
 
 	it("infers runtime from registry_type when runtime_hint is missing (pypi -> uvx)", () => {
-		const cmd = buildCommandExample(
+		const cmd = buildConfigExample(
 			basePkg({
 				runtime_hint: undefined,
 				registry_type: "pypi",
@@ -31,41 +35,41 @@ describe("buildCommandExample", () => {
 				version: "0.5.0",
 			}),
 		);
-		expect(cmd).toEqual("uvx weather==0.5.0");
+		expect(cmd).toEqual({
+			command: "uvx",
+			args: ["weather==0.5.0"],
+			env: undefined,
+		});
 	});
 
 	it("builds dnx command for nuget", () => {
-		const cmd = buildCommandExample(
+		const cmd = buildConfigExample(
 			basePkg({
 				runtime_hint: undefined,
 				registry_type: "nuget",
 				identifier: "Knapcode.SampleMcpServer",
 			}),
 		);
-		expect(cmd).toEqual("dnx Knapcode.SampleMcpServer@1.2.3");
+		expect(cmd).toEqual({
+			command: "dnx",
+			args: ["Knapcode.SampleMcpServer@1.2.3"],
+			env: undefined,
+		});
 	});
 
-	it("builds docker run with --rm -i and image:version", () => {
-		const cmd = buildCommandExample(
+	it("builds docker command with image:version", () => {
+		const cmd = buildConfigExample(
 			basePkg({
 				runtime_hint: undefined,
 				registry_type: "oci",
 				identifier: "org/image",
 			}),
 		);
-		expect(cmd).toEqual("docker run --rm -i org/image:1.2.3");
-	});
-
-	it("keeps OCI digest as-is", () => {
-		const cmd = buildCommandExample(
-			basePkg({
-				runtime_hint: "docker",
-				registry_type: "oci",
-				identifier: "org/image@sha256:abc",
-				version: "9.9.9",
-			}),
-		);
-		expect(cmd).toEqual("docker run --rm -i org/image@sha256:abc");
+		expect(cmd).toEqual({
+			command: "docker",
+			args: ["org/image:1.2.3"],
+			env: undefined,
+		});
 	});
 
 	it("renders environment variables and masks secrets", () => {
@@ -73,10 +77,15 @@ describe("buildCommandExample", () => {
 			{ name: "API_KEY", is_secret: true, is_required: true },
 			{ name: "LOG_LEVEL", default: "info", is_required: true },
 		];
-		const cmd = buildCommandExample(basePkg({ environment_variables: envs }));
-		expect(cmd).toEqual(
-			"API_KEY=<secret> LOG_LEVEL=<value> npx -y example/pkg@1.2.3",
-		);
+		const cmd = buildConfigExample(basePkg({ environment_variables: envs }));
+		expect(cmd).toEqual({
+			command: "npx",
+			args: ["example/pkg@1.2.3"],
+			env: {
+				API_KEY: "<secret>",
+				LOG_LEVEL: "<value>",
+			},
+		});
 	});
 
 	it("renders named args with '--' prefix and equals sign", () => {
@@ -84,10 +93,12 @@ describe("buildCommandExample", () => {
 			{ type: "named", name: "port", default: "8080", is_required: true },
 			{ type: "named", name: "--flag", is_required: true },
 		];
-		const cmd = buildCommandExample(basePkg({ package_arguments: args }));
-		expect(cmd).toEqual(
-			"npx -y example/pkg@1.2.3 --port=<value> --flag=<value>",
-		);
+		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
+		expect(cmd).toEqual({
+			command: "npx",
+			args: ["example/pkg@1.2.3", "--port=<value>", "--flag=<value>"],
+			env: undefined,
+		});
 	});
 
 	it("renders positional args with value or value_hint placeholder", () => {
@@ -95,8 +106,12 @@ describe("buildCommandExample", () => {
 			{ type: "positional", value: "run", is_required: true },
 			{ type: "positional", value_hint: "target_dir", is_required: true },
 		];
-		const cmd = buildCommandExample(basePkg({ package_arguments: args }));
-		expect(cmd).toEqual("npx -y example/pkg@1.2.3 <value> <value>");
+		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
+		expect(cmd).toEqual({
+			command: "npx",
+			args: ["example/pkg@1.2.3", "<value>", "<value>"],
+			env: undefined,
+		});
 	});
 
 	it("applies {curly_braces} variable substitution in values", () => {
@@ -109,7 +124,7 @@ describe("buildCommandExample", () => {
 				is_required: true,
 			},
 		];
-		const cmd = buildCommandExample(
+		const cmd = buildConfigExample(
 			basePkg({
 				runtime_hint: "docker",
 				registry_type: "oci",
@@ -117,31 +132,47 @@ describe("buildCommandExample", () => {
 				runtime_arguments: args,
 			}),
 		);
-		expect(cmd).toEqual("docker run --rm -i --mount=<value> org/app:1.2.3");
+		expect(cmd).toEqual({
+			command: "docker",
+			args: ["--mount=<value>", "org/app:1.2.3"],
+			env: undefined,
+		});
 	});
 
 	it("quotes tokens containing spaces", () => {
 		const args: Argument[] = [
 			{ type: "positional", value: "hello world", is_required: true },
 		];
-		const cmd = buildCommandExample(basePkg({ package_arguments: args }));
-		expect(cmd).toEqual("npx -y example/pkg@1.2.3 <value>");
+		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
+		expect(cmd).toEqual({
+			command: "npx",
+			args: ["example/pkg@1.2.3", "<value>"],
+			env: undefined,
+		});
 	});
 
 	it("uses <filepath> placeholder for filepath format without defaults", () => {
 		const args: Argument[] = [
 			{ type: "positional", format: "filepath", is_required: true },
 		];
-		const cmd = buildCommandExample(basePkg({ package_arguments: args }));
-		expect(cmd).toEqual("npx -y example/pkg@1.2.3 <filepath>");
+		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
+		expect(cmd).toEqual({
+			command: "npx",
+			args: ["example/pkg@1.2.3", "<filepath>"],
+			env: undefined,
+		});
 	});
 
 	it("keeps single-dash flags and formats value with equals sign", () => {
 		const args: Argument[] = [
 			{ type: "named", name: "-p", default: "8080", is_required: true },
 		];
-		const cmd = buildCommandExample(basePkg({ package_arguments: args }));
-		expect(cmd).toEqual("npx -y example/pkg@1.2.3 -p=<value>");
+		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
+		expect(cmd).toEqual({
+			command: "npx",
+			args: ["example/pkg@1.2.3", "-p=<value>"],
+			env: undefined,
+		});
 	});
 
 	it("uses first choice when default/value absent", () => {
@@ -153,8 +184,12 @@ describe("buildCommandExample", () => {
 				is_required: true,
 			},
 		];
-		const cmd = buildCommandExample(basePkg({ package_arguments: args }));
-		expect(cmd).toEqual("npx -y example/pkg@1.2.3 --mode=<value>");
+		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
+		expect(cmd).toEqual({
+			command: "npx",
+			args: ["example/pkg@1.2.3", "--mode=<value>"],
+			env: undefined,
+		});
 	});
 
 	it("quotes whole token when named value contains spaces", () => {
@@ -166,8 +201,12 @@ describe("buildCommandExample", () => {
 				is_required: true,
 			},
 		];
-		const cmd = buildCommandExample(basePkg({ package_arguments: args }));
-		expect(cmd).toEqual("npx -y example/pkg@1.2.3 --arg=<value>");
+		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
+		expect(cmd).toEqual({
+			command: "npx",
+			args: ["example/pkg@1.2.3", "--arg=<value>"],
+			env: undefined,
+		});
 	});
 
 	it("orders docker runtime args before image and package args after image", () => {
@@ -184,7 +223,7 @@ describe("buildCommandExample", () => {
 			{ type: "positional", value: "run", is_required: true },
 			{ type: "positional", value: "abc", is_required: true },
 		];
-		const cmd = buildCommandExample(
+		const cmd = buildConfigExample(
 			basePkg({
 				runtime_hint: "docker",
 				registry_type: "oci",
@@ -193,9 +232,11 @@ describe("buildCommandExample", () => {
 				package_arguments: pargs,
 			}),
 		);
-		expect(cmd).toEqual(
-			"docker run --rm -i --mount=<value> org/app:1.2.3 <value> <value>",
-		);
+		expect(cmd).toEqual({
+			command: "docker",
+			args: ["--mount=<value>", "org/app:1.2.3", "<value>", "<value>"],
+			env: undefined,
+		});
 	});
 
 	it("does not duplicate repeated args; shows one instance only", () => {
@@ -209,7 +250,7 @@ describe("buildCommandExample", () => {
 				is_required: true,
 			},
 		];
-		const cmd = buildCommandExample(
+		const cmd = buildConfigExample(
 			basePkg({
 				runtime_hint: "docker",
 				registry_type: "oci",
@@ -217,7 +258,11 @@ describe("buildCommandExample", () => {
 				runtime_arguments: rargs,
 			}),
 		);
-		expect(cmd).toEqual("docker run --rm -i --mount=<value> org/app:1.2.3");
+		expect(cmd).toEqual({
+			command: "docker",
+			args: ["--mount=<value>", "org/app:1.2.3"],
+			env: undefined,
+		});
 	});
 
 	it("substitutes variables in env values and masks secrets", () => {
@@ -230,18 +275,27 @@ describe("buildCommandExample", () => {
 			},
 			{ name: "SECRET", is_secret: true, value: "anything", is_required: true },
 		];
-		const cmd = buildCommandExample(basePkg({ environment_variables: envs }));
-		expect(cmd).toEqual(
-			"TOKEN=<value> SECRET=<secret> npx -y example/pkg@1.2.3",
-		);
+		const cmd = buildConfigExample(basePkg({ environment_variables: envs }));
+		expect(cmd).toEqual({
+			command: "npx",
+			args: ["example/pkg@1.2.3"],
+			env: {
+				TOKEN: "<value>",
+				SECRET: "<secret>",
+			},
+		});
 	});
 
 	it("escapes quotes inside quoted tokens", () => {
 		const args: Argument[] = [
 			{ type: "positional", value: 'say "hello"', is_required: true },
 		];
-		const cmd = buildCommandExample(basePkg({ package_arguments: args }));
-		expect(cmd).toEqual("npx -y example/pkg@1.2.3 <value>");
+		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
+		expect(cmd).toEqual({
+			command: "npx",
+			args: ["example/pkg@1.2.3", "<value>"],
+			env: undefined,
+		});
 	});
 
 	it("omits non-required environment variables", () => {
@@ -249,8 +303,12 @@ describe("buildCommandExample", () => {
 			{ name: "API_KEY", is_secret: true },
 			{ name: "LOG_LEVEL", default: "info" },
 		];
-		const cmd = buildCommandExample(basePkg({ environment_variables: envs }));
-		expect(cmd).toEqual("npx -y example/pkg@1.2.3");
+		const cmd = buildConfigExample(basePkg({ environment_variables: envs }));
+		expect(cmd).toEqual({
+			command: "npx",
+			args: ["example/pkg@1.2.3"],
+			env: undefined,
+		});
 	});
 
 	it("omits non-required args", () => {
@@ -258,7 +316,11 @@ describe("buildCommandExample", () => {
 			{ type: "named", name: "port", default: "8080" },
 			{ type: "positional", value: "run" },
 		];
-		const cmd = buildCommandExample(basePkg({ package_arguments: args }));
-		expect(cmd).toEqual("npx -y example/pkg@1.2.3");
+		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
+		expect(cmd).toEqual({
+			command: "npx",
+			args: ["example/pkg@1.2.3"],
+			env: undefined,
+		});
 	});
 });

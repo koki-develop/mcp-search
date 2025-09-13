@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { IconExternalLink } from "@tabler/icons-react";
 import type { Package } from "../../lib/api.generated";
-import CommandExample from "../CommandExample";
+import ConfigExample from "../ConfigExample";
 
 function packageUrl(pkg: Package): string | undefined {
 	if (!pkg.identifier) return undefined;
@@ -70,7 +70,7 @@ export default function ServerPackageList({
 									<Text className="font-bold">{pkg.identifier}</Text>
 								)}
 
-								<CommandExample pkg={pkg} />
+								<ConfigExample pkg={pkg} />
 							</Stack>
 
 							{/*Environment variables*/}

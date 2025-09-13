@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/koki-develop/mcp-search/compare/v0.4.0...v0.5.0) (2025-09-13)
+
+
+### Features
+
+* **frontend:** Set og tag ([e807698](https://github.com/koki-develop/mcp-search/commit/e8076980686145d84e6ae0fc8ff0810ad0af8e15))
+
 ## [0.4.0](https://github.com/koki-develop/mcp-search/compare/v0.3.0...v0.4.0) (2025-09-13)
 
 

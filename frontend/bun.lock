@@ -4,6 +4,7 @@
     "": {
       "name": "frontend",
       "dependencies": {
+        "@mantine/code-highlight": "8.3.1",
         "@mantine/core": "8.3.1",
         "@mantine/hooks": "8.3.1",
         "@tabler/icons-react": "3.34.1",
@@ -284,6 +285,8 @@
     "@jsep-plugin/regex": ["@jsep-plugin/regex@1.0.4", "", { "peerDependencies": { "jsep": "^0.4.0||^1.0.0" } }, "sha512-q7qL4Mgjs1vByCaTnDFcBnV9HS7GVPJX5vyVoCgZHNSC9rjwIlmbXG5sUuorR5ndfHAIlJ8pVStxvjXHbNvtUg=="],
 
     "@jsep-plugin/ternary": ["@jsep-plugin/ternary@1.1.4", "", { "peerDependencies": { "jsep": "^0.4.0||^1.0.0" } }, "sha512-ck5wiqIbqdMX6WRQztBL7ASDty9YLgJ3sSAK5ZpBzXeySvFGCzIvM6UiAI4hTZ22fEcYQVV/zhUbNscggW+Ukg=="],
+
+    "@mantine/code-highlight": ["@mantine/code-highlight@8.3.1", "", { "dependencies": { "clsx": "^2.1.1" }, "peerDependencies": { "@mantine/core": "8.3.1", "@mantine/hooks": "8.3.1", "react": "^18.x || ^19.x", "react-dom": "^18.x || ^19.x" } }, "sha512-YRjMuLGnNg8BlzYg1+Dj3ZW3sb4q0P9QBNZwGdKpe4x0dtLOPa3pVPnKWhSiD4/Y0cWUbCiyzUQ+MlzFYnAg9w=="],
 
     "@mantine/core": ["@mantine/core@8.3.1", "", { "dependencies": { "@floating-ui/react": "^0.27.16", "clsx": "^2.1.1", "react-number-format": "^5.4.4", "react-remove-scroll": "^2.7.1", "react-textarea-autosize": "8.5.9", "type-fest": "^4.41.0" }, "peerDependencies": { "@mantine/hooks": "8.3.1", "react": "^18.x || ^19.x", "react-dom": "^18.x || ^19.x" } }, "sha512-OYfxn9cTv+K6RZ8+Ozn/HDQXkB8Fmn+KJJt5lxyFDP9F09EHnC59Ldadv1LyUZVBGtNqz4sn6b3vBShbxwAmYw=="],
 

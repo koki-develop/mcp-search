@@ -1,7 +1,8 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
 	collection,
 	FieldPath,
+	getCountFromServer,
 	getDocs,
 	limit,
 	type QueryConstraint,
@@ -10,6 +11,7 @@ import {
 	startAfter,
 	where,
 } from "firebase/firestore";
+import { useEffect } from "react";
 import { firestore } from "../../../lib/firebase";
 import type { ServerDetail } from "./types";
 
@@ -21,13 +23,9 @@ type ListServersParams = {
 	cursor: QueryDocumentSnapshot | null;
 };
 
-const _listServers = async (
-	params: ListServersParams,
-): Promise<{ servers: Server[]; nextCursor: QueryDocumentSnapshot | null }> => {
-	const serversCollection = collection(firestore, "servers_v0");
-
+const _buildNameTokensConstraints = (params: ListServersParams) => {
 	const words = params.keyword.split(/\s+/).filter((word) => word.length > 0);
-	const nameTokensConstraints = words.reduce((acc, word) => {
+	return words.reduce<QueryConstraint[]>((acc, word) => {
 		const tokens = _bigram(word);
 		acc.push(
 			...tokens.map((token) =>
@@ -44,12 +42,25 @@ const _listServers = async (
 			),
 		);
 		return acc;
-	}, [] as QueryConstraint[]);
+	}, []);
+};
+
+const _countServers = async (params: ListServersParams): Promise<number> => {
+	const serversCollection = collection(firestore, "servers_v0");
+	const ref = query(serversCollection, ..._buildNameTokensConstraints(params));
+	const snapshot = await getCountFromServer(ref);
+	return snapshot.data().count;
+};
+
+const _listServers = async (
+	params: ListServersParams,
+): Promise<{ servers: Server[]; nextCursor: QueryDocumentSnapshot | null }> => {
+	const serversCollection = collection(firestore, "servers_v0");
 
 	const ref = query(
 		serversCollection,
 		limit(params.limit),
-		...nameTokensConstraints,
+		..._buildNameTokensConstraints(params),
 		...(params.cursor ? [startAfter(params.cursor)] : []),
 	);
 	const snapshot = await getDocs(ref);
@@ -69,7 +80,7 @@ export type UseServersParams = {
 };
 
 export const useServers = (params: UseServersParams) => {
-	return useInfiniteQuery({
+	const { error, ...query } = useInfiniteQuery({
 		queryKey: ["servers", params],
 		initialPageParam: null as QueryDocumentSnapshot | null,
 		queryFn: ({ pageParam }) =>
@@ -81,6 +92,34 @@ export const useServers = (params: UseServersParams) => {
 		select: (data) => data.pages.flatMap((page) => page.servers),
 		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
+
+	useEffect(() => {
+		if (error) {
+			console.error(error);
+		}
+	}, [error]);
+
+	return query;
+};
+
+export const useServersCount = (params: UseServersParams) => {
+	const { error, ...query } = useQuery({
+		queryKey: ["servers", params, "count"],
+		queryFn: () =>
+			_countServers({
+				keyword: params.keyword,
+				cursor: null,
+				limit: 0,
+			}),
+	});
+
+	useEffect(() => {
+		if (error) {
+			console.error(error);
+		}
+	}, [error]);
+
+	return query;
 };
 
 const _bigram = (str: string): string[] => {

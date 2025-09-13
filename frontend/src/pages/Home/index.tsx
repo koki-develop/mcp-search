@@ -11,17 +11,20 @@ import {
 } from "@mantine/core";
 import { useDebouncedState, useHotkeys } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons-react";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import ServerCard from "../../features/server/components/ServerCard";
-import { useServers } from "../../features/server/lib/servers";
+import { useServers, useServersCount } from "../../features/server/lib/servers";
 
 export default function Home() {
 	const searchInputRef = useRef<HTMLInputElement>(null);
 	const [keyword, setKeyword] = useDebouncedState<string>("", 200);
-	const { isFetching, data, hasNextPage, fetchNextPage, error } = useServers({
+	const { isFetching, data, hasNextPage, fetchNextPage } = useServers({
 		keyword,
 	});
 	const servers = data ?? [];
+	const { data: serversCount } = useServersCount({
+		keyword,
+	});
 
 	useHotkeys([
 		[
@@ -31,12 +34,6 @@ export default function Home() {
 			},
 		],
 	]);
-
-	useEffect(() => {
-		if (error) {
-			console.error(error);
-		}
-	}, [error]);
 
 	return (
 		<Container py="lg">
@@ -68,9 +65,13 @@ export default function Home() {
 					onChange={(e) => setKeyword(e.currentTarget.value)}
 				/>
 
-				{!isFetching && servers.length === 0 && (
-					<Text className="text-center">No servers found.</Text>
-				)}
+				<Text className="pl-2" c="dimmed" size="sm">
+					{isFetching || serversCount === undefined
+						? "Loading..."
+						: serversCount === 0
+							? "No servers found."
+							: `${serversCount} server${serversCount !== 1 ? "s" : ""} found.`}
+				</Text>
 
 				{servers.length > 0 && (
 					<Stack gap="sm">

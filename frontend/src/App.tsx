@@ -1,5 +1,9 @@
 import "./index.css";
 
+import {
+	CodeHighlightAdapterProvider,
+	createShikiAdapter,
+} from "@mantine/code-highlight";
 import { MantineProvider } from "@mantine/core";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Route, Routes } from "react-router";
@@ -16,17 +20,31 @@ const queryClient = new QueryClient({
 	},
 });
 
+async function loadShiki() {
+	const { createHighlighter } = await import("shiki");
+	const shiki = await createHighlighter({
+		langs: ["json"],
+		themes: [],
+	});
+
+	return shiki;
+}
+
+const shikiAdapter = createShikiAdapter(loadShiki);
+
 export default function App() {
 	return (
 		<MantineProvider>
-			<QueryClientProvider client={queryClient}>
-				<Layout>
-					<Routes>
-						<Route path="/" element={<Home />} />
-						<Route path="*" element={<NotFound />} />
-					</Routes>
-				</Layout>
-			</QueryClientProvider>
+			<CodeHighlightAdapterProvider adapter={shikiAdapter}>
+				<QueryClientProvider client={queryClient}>
+					<Layout>
+						<Routes>
+							<Route path="/" element={<Home />} />
+							<Route path="*" element={<NotFound />} />
+						</Routes>
+					</Layout>
+				</QueryClientProvider>
+			</CodeHighlightAdapterProvider>
 		</MantineProvider>
 	);
 }

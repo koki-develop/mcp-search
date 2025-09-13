@@ -22,5 +22,5 @@ dist dist-ssr
 *.sln
 *.sw?
 
-src/lib/api.generated.ts
+api.generated.ts
 .env

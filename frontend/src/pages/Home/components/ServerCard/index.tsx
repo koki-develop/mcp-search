@@ -58,6 +58,9 @@ export default function ServerCard({ server }: ServerCardProps) {
 			</Card>
 
 			<Drawer
+				classNames={{
+					header: "items-start",
+				}}
 				opened={opened}
 				onClose={close}
 				position="right"

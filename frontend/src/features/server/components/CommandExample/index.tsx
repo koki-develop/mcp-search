@@ -1,6 +1,6 @@
 import { ActionIcon, Code, CopyButton, Group } from "@mantine/core";
 import { IconCheck, IconCopy } from "@tabler/icons-react";
-import type { Package } from "../../../../lib/api.generated";
+import type { Package } from "../../lib/api.generated";
 import { buildCommandExample } from "./command";
 
 type CommandExampleProps = { pkg: Package };

@@ -9,7 +9,7 @@ export default defineConfig({
 		output: {
 			baseUrl: "https://registry.modelcontextprotocol.io",
 			client: "fetch",
-			target: "src/lib/api.generated.ts",
+			target: "src/features/server/lib/api.generated.ts",
 		},
 	},
 });

@@ -12,8 +12,8 @@ import {
 import { useDebouncedState, useHotkeys } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons-react";
 import { useEffect, useRef } from "react";
-import { useServers } from "../../lib/servers";
-import ServerCard from "./components/ServerCard";
+import ServerCard from "../../features/server/components/ServerCard";
+import { useServers } from "../../features/server/lib/servers";
 
 export default function Home() {
 	const searchInputRef = useRef<HTMLInputElement>(null);

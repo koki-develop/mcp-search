@@ -3,7 +3,7 @@ import type {
 	InputFormat,
 	KeyValueInput,
 	Package,
-} from "../../../../lib/api.generated";
+} from "../../lib/api.generated";
 
 const RUNTIME_FALLBACK: Record<string, string> = {
 	npm: "npx",

@@ -11,9 +11,9 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import type { Server } from "../../../../lib/servers";
-import ServerPackageList from "./PackageList";
-import ServerRemoteList from "./RemoteList";
+import type { Server } from "../../lib/servers";
+import PackageList from "../PackageList";
+import RemoteList from "../RemoteList";
 
 dayjs.extend(relativeTime);
 
@@ -118,14 +118,14 @@ export default function ServerCard({ server }: ServerCardProps) {
 					{server.packages && server.packages.length > 0 && (
 						<>
 							<Divider label="Packages" />
-							<ServerPackageList packages={server.packages} />
+							<PackageList packages={server.packages} />
 						</>
 					)}
 
 					{server.remotes && server.remotes.length > 0 && (
 						<>
 							<Divider label="Remotes" />
-							<ServerRemoteList remotes={server.remotes} />
+							<RemoteList remotes={server.remotes} />
 						</>
 					)}
 				</Stack>

@@ -9,9 +9,25 @@ import {
 	Text,
 } from "@mantine/core";
 import { IconExternalLink } from "@tabler/icons-react";
-import type { Package } from "../../../../lib/api.generated";
-import CommandExample from "./CommandExample";
-import { packageUrl } from "./utils";
+import type { Package } from "../../lib/api.generated";
+import CommandExample from "../CommandExample";
+
+function packageUrl(pkg: Package): string | undefined {
+	if (!pkg.identifier) return undefined;
+	if (!pkg.registry_type) return undefined;
+
+	switch (pkg.registry_type) {
+		case "npm":
+			return `https://www.npmjs.com/package/${pkg.identifier}`;
+		case "pypi":
+			return `https://pypi.org/project/${pkg.identifier}`;
+		case "nuget":
+			return `https://www.nuget.org/packages/${pkg.identifier}`;
+		// TODO: support more registries
+	}
+
+	return undefined;
+}
 
 type ServerPackageListProps = {
 	packages: Package[];

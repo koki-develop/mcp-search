@@ -10,8 +10,8 @@ import {
 	startAfter,
 	where,
 } from "firebase/firestore";
+import { firestore } from "../../../lib/firebase";
 import type { ServerDetail } from "./api.generated";
-import { firestore } from "./firebase";
 
 export type Server = ServerDetail & { id: string };
 

@@ -1,9 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import type {
-	Argument,
-	KeyValueInput,
-	Package,
-} from "../../../../lib/api.generated";
+import type { Argument, KeyValueInput, Package } from "../../lib/api.generated";
 import { buildCommandExample } from "./command";
 
 const basePkg = (over: Partial<Package> = {}): Package => ({

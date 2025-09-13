@@ -10,7 +10,7 @@ import {
 	Text,
 } from "@mantine/core";
 import { IconCheck, IconCopy } from "@tabler/icons-react";
-import type { Remote } from "../../../../lib/api.generated";
+import type { Remote } from "../../lib/api.generated";
 
 export type ServerRemoteListProps = {
 	remotes: Remote[];

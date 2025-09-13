@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.1](https://github.com/koki-develop/mcp-search/compare/v0.8.0...v0.8.1) (2025-09-13)
+
+
+### Bug Fixes
+
+* **functions:** Fix engine version ([0cb817b](https://github.com/koki-develop/mcp-search/commit/0cb817b3fd79bb3c37b4e8e1a66efeb843f24579))
+
 ## [0.8.0](https://github.com/koki-develop/mcp-search/compare/v0.7.1...v0.8.0) (2025-09-13)
 
 

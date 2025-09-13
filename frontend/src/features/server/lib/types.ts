@@ -1,6 +1,8 @@
 import type {
 	Package as GeneratedPackage,
+	Remote as GeneratedRemote,
 	KeyValueInput,
+	RemoteTransportType,
 } from "./api.generated";
 
 export * from "./api.generated";
@@ -22,4 +24,8 @@ export type Transport =
 
 export type Package = GeneratedPackage & {
 	transport: Transport;
+};
+
+export type Remote = GeneratedRemote & {
+	type: RemoteTransportType;
 };

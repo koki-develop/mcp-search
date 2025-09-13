@@ -3,6 +3,7 @@ import type {
 	InputFormat,
 	KeyValueInput,
 	Package,
+	Remote,
 } from "../../lib/types";
 
 const RUNTIME_FALLBACK: Record<string, string> = {
@@ -24,7 +25,7 @@ export type StdioConfig = {
 
 export type SseConfig = {
 	type: "sse";
-	command: string;
+	command?: string;
 	json: {
 		type: "sse";
 		url: string;
@@ -34,7 +35,7 @@ export type SseConfig = {
 
 export type HttpConfig = {
 	type: "http";
-	command: string;
+	command?: string;
 	json: {
 		type: "http";
 		url: string;
@@ -44,7 +45,34 @@ export type HttpConfig = {
 
 export type Config = StdioConfig | SseConfig | HttpConfig;
 
-export function buildConfigExample(pkg: Package): Config | null {
+export function buildRemoteConfigExample(remote: Remote): Config | null {
+	switch ((remote.transport_type ?? remote.type) as string) {
+		case "sse":
+			return {
+				type: "sse",
+				json: {
+					type: "sse",
+					url: remote.url,
+					headers: renderKeyValue(remote.headers ?? []),
+				},
+			};
+		case "streamable":
+		case "streamable-http":
+		case "http":
+			return {
+				type: "http",
+				json: {
+					type: "http",
+					url: remote.url,
+					headers: renderKeyValue(remote.headers ?? []),
+				},
+			};
+	}
+
+	return null;
+}
+
+export function buildPackageConfigExample(pkg: Package): Config | null {
 	if (!pkg || !pkg.identifier || !pkg.version) return null;
 	if (pkg.registry_type === "mcpb") return null;
 
@@ -106,6 +134,8 @@ export function buildConfigExample(pkg: Package): Config | null {
 				},
 			};
 	}
+
+	return null;
 }
 
 function packageIdentifier(pkg: Package): string {

@@ -1,16 +1,6 @@
-import {
-	ActionIcon,
-	Badge,
-	Box,
-	Card,
-	Code,
-	CopyButton,
-	Group,
-	Stack,
-	Text,
-} from "@mantine/core";
-import { IconCheck, IconCopy } from "@tabler/icons-react";
+import { Badge, Box, Card, Code, Group, Stack, Text } from "@mantine/core";
 import type { Remote } from "../../lib/types";
+import ConfigExample from "../ConfigExample";
 
 export type ServerRemoteListProps = {
 	remotes: Remote[];
@@ -31,20 +21,8 @@ export default function ServerRemoteList({ remotes }: ServerRemoteListProps) {
 								</Badge>
 							</Group>
 
-							{/*URL*/}
-							<Group gap={6} wrap="wrap">
-								<Text size="sm" c="dimmed">
-									URL:
-								</Text>
-								<Code className="whitespace-nowrap text-sm">{remote.url}</Code>
-								<CopyButton value={remote.url} timeout={1000}>
-									{({ copied, copy }) => (
-										<ActionIcon size="xs" variant="transparent" onClick={copy}>
-											{copied ? <IconCheck /> : <IconCopy />}
-										</ActionIcon>
-									)}
-								</CopyButton>
-							</Group>
+							{/*Config*/}
+							<ConfigExample type="remote" remote={remote} />
 
 							{/*Headers*/}
 							{remote.headers && remote.headers.length > 0 && (

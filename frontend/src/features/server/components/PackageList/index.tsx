@@ -55,7 +55,7 @@ export default function ServerPackageList({
 									{pkg.version && <Badge variant="light">{pkg.version}</Badge>}
 								</Group>
 
-								{/*URL*/}
+								{/*Identifier*/}
 								{url ? (
 									<Anchor
 										className="inline-flex items-center gap-1 font-bold"
@@ -70,7 +70,7 @@ export default function ServerPackageList({
 									<Text className="font-bold">{pkg.identifier}</Text>
 								)}
 
-								<ConfigExample pkg={pkg} />
+								<ConfigExample type="package" pkg={pkg} />
 							</Stack>
 
 							{/*Environment variables*/}

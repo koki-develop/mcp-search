@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import type { Argument, KeyValueInput, Package } from "../../lib/types";
-import { buildConfigExample } from "./config";
+import { buildPackageConfigExample } from "./config";
 
 const basePkg = (over: Partial<Package> = {}): Package => ({
 	identifier: "example/pkg",
@@ -11,15 +11,21 @@ const basePkg = (over: Partial<Package> = {}): Package => ({
 	...over,
 });
 
-describe("buildConfigExample", () => {
+describe("buildPackageConfigExample", () => {
 	it("returns null for missing identifier/version or mcpb", () => {
-		expect(buildConfigExample(basePkg({ identifier: undefined }))).toBeNull();
-		expect(buildConfigExample(basePkg({ version: undefined }))).toBeNull();
-		expect(buildConfigExample(basePkg({ registry_type: "mcpb" }))).toBeNull();
+		expect(
+			buildPackageConfigExample(basePkg({ identifier: undefined })),
+		).toBeNull();
+		expect(
+			buildPackageConfigExample(basePkg({ version: undefined })),
+		).toBeNull();
+		expect(
+			buildPackageConfigExample(basePkg({ registry_type: "mcpb" })),
+		).toBeNull();
 	});
 
 	it("builds npx command with package@version", () => {
-		const cmd = buildConfigExample(basePkg());
+		const cmd = buildPackageConfigExample(basePkg());
 		expect(cmd).toEqual({
 			type: "stdio",
 			json: {
@@ -32,7 +38,7 @@ describe("buildConfigExample", () => {
 	});
 
 	it("infers runtime from registry_type when runtime_hint is missing (pypi -> uvx)", () => {
-		const cmd = buildConfigExample(
+		const cmd = buildPackageConfigExample(
 			basePkg({
 				runtime_hint: undefined,
 				registry_type: "pypi",
@@ -52,7 +58,7 @@ describe("buildConfigExample", () => {
 	});
 
 	it("builds dnx command for nuget", () => {
-		const cmd = buildConfigExample(
+		const cmd = buildPackageConfigExample(
 			basePkg({
 				runtime_hint: undefined,
 				registry_type: "nuget",
@@ -71,7 +77,7 @@ describe("buildConfigExample", () => {
 	});
 
 	it("builds docker command with image:version", () => {
-		const cmd = buildConfigExample(
+		const cmd = buildPackageConfigExample(
 			basePkg({
 				runtime_hint: undefined,
 				registry_type: "oci",
@@ -94,7 +100,9 @@ describe("buildConfigExample", () => {
 			{ name: "API_KEY", is_secret: true, is_required: true },
 			{ name: "LOG_LEVEL", default: "info", is_required: true },
 		];
-		const cmd = buildConfigExample(basePkg({ environment_variables: envs }));
+		const cmd = buildPackageConfigExample(
+			basePkg({ environment_variables: envs }),
+		);
 		expect(cmd).toEqual({
 			type: "stdio",
 			json: {
@@ -114,7 +122,7 @@ describe("buildConfigExample", () => {
 			{ type: "named", name: "port", default: "8080", is_required: true },
 			{ type: "named", name: "--flag", is_required: true },
 		];
-		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
+		const cmd = buildPackageConfigExample(basePkg({ package_arguments: args }));
 		expect(cmd).toEqual({
 			type: "stdio",
 			json: {
@@ -131,7 +139,7 @@ describe("buildConfigExample", () => {
 			{ type: "positional", value: "run", is_required: true },
 			{ type: "positional", value_hint: "target_dir", is_required: true },
 		];
-		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
+		const cmd = buildPackageConfigExample(basePkg({ package_arguments: args }));
 		expect(cmd).toEqual({
 			type: "stdio",
 			json: {
@@ -153,7 +161,7 @@ describe("buildConfigExample", () => {
 				is_required: true,
 			},
 		];
-		const cmd = buildConfigExample(
+		const cmd = buildPackageConfigExample(
 			basePkg({
 				runtime_hint: "docker",
 				registry_type: "oci",
@@ -176,7 +184,7 @@ describe("buildConfigExample", () => {
 		const args: Argument[] = [
 			{ type: "positional", value: "hello world", is_required: true },
 		];
-		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
+		const cmd = buildPackageConfigExample(basePkg({ package_arguments: args }));
 		expect(cmd).toEqual({
 			type: "stdio",
 			json: {
@@ -192,7 +200,7 @@ describe("buildConfigExample", () => {
 		const args: Argument[] = [
 			{ type: "positional", format: "filepath", is_required: true },
 		];
-		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
+		const cmd = buildPackageConfigExample(basePkg({ package_arguments: args }));
 		expect(cmd).toEqual({
 			type: "stdio",
 			json: {
@@ -208,7 +216,7 @@ describe("buildConfigExample", () => {
 		const args: Argument[] = [
 			{ type: "named", name: "-p", default: "8080", is_required: true },
 		];
-		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
+		const cmd = buildPackageConfigExample(basePkg({ package_arguments: args }));
 		expect(cmd).toEqual({
 			type: "stdio",
 			json: {
@@ -229,7 +237,7 @@ describe("buildConfigExample", () => {
 				is_required: true,
 			},
 		];
-		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
+		const cmd = buildPackageConfigExample(basePkg({ package_arguments: args }));
 		expect(cmd).toEqual({
 			type: "stdio",
 			json: {
@@ -250,7 +258,7 @@ describe("buildConfigExample", () => {
 				is_required: true,
 			},
 		];
-		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
+		const cmd = buildPackageConfigExample(basePkg({ package_arguments: args }));
 		expect(cmd).toEqual({
 			type: "stdio",
 			json: {
@@ -276,7 +284,7 @@ describe("buildConfigExample", () => {
 			{ type: "positional", value: "run", is_required: true },
 			{ type: "positional", value: "abc", is_required: true },
 		];
-		const cmd = buildConfigExample(
+		const cmd = buildPackageConfigExample(
 			basePkg({
 				runtime_hint: "docker",
 				registry_type: "oci",
@@ -307,7 +315,7 @@ describe("buildConfigExample", () => {
 				is_required: true,
 			},
 		];
-		const cmd = buildConfigExample(
+		const cmd = buildPackageConfigExample(
 			basePkg({
 				runtime_hint: "docker",
 				registry_type: "oci",
@@ -336,7 +344,9 @@ describe("buildConfigExample", () => {
 			},
 			{ name: "SECRET", is_secret: true, value: "anything", is_required: true },
 		];
-		const cmd = buildConfigExample(basePkg({ environment_variables: envs }));
+		const cmd = buildPackageConfigExample(
+			basePkg({ environment_variables: envs }),
+		);
 		expect(cmd).toEqual({
 			type: "stdio",
 			json: {
@@ -355,7 +365,7 @@ describe("buildConfigExample", () => {
 		const args: Argument[] = [
 			{ type: "positional", value: 'say "hello"', is_required: true },
 		];
-		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
+		const cmd = buildPackageConfigExample(basePkg({ package_arguments: args }));
 		expect(cmd).toEqual({
 			type: "stdio",
 			json: {
@@ -372,7 +382,9 @@ describe("buildConfigExample", () => {
 			{ name: "API_KEY", is_secret: true },
 			{ name: "LOG_LEVEL", default: "info" },
 		];
-		const cmd = buildConfigExample(basePkg({ environment_variables: envs }));
+		const cmd = buildPackageConfigExample(
+			basePkg({ environment_variables: envs }),
+		);
 		expect(cmd).toEqual({
 			type: "stdio",
 			json: {
@@ -389,7 +401,7 @@ describe("buildConfigExample", () => {
 			{ type: "named", name: "port", default: "8080" },
 			{ type: "positional", value: "run" },
 		];
-		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
+		const cmd = buildPackageConfigExample(basePkg({ package_arguments: args }));
 		expect(cmd).toEqual({
 			type: "stdio",
 			json: {

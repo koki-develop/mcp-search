@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.0](https://github.com/koki-develop/mcp-search/compare/v0.6.0...v0.7.0) (2025-09-13)
+
+
+### Features
+
+* **frontend:** Enable code highlight ([55f4699](https://github.com/koki-develop/mcp-search/commit/55f4699bef24d13b426b2109668a4dd25c5ef021))
+
+
+### Bug Fixes
+
+* **frontend:** Show package transport badge ([b58079d](https://github.com/koki-develop/mcp-search/commit/b58079d3575d5b360d4068274a6ce096e305263c))
+
 ## [0.6.0](https://github.com/koki-develop/mcp-search/compare/v0.5.0...v0.6.0) (2025-09-13)
 
 

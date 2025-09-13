@@ -1,6 +1,6 @@
 {
   "name": "mcp-search",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "devDependencies": {
     "firebase-tools": "14.16.0",
     "husky": "9.1.7"

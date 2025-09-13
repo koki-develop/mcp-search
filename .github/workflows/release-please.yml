@@ -28,6 +28,9 @@ jobs:
 
   deploy:
     timeout-minutes: 20
+    environment:
+      name: production
+      url: https://mcp-search.org
     permissions:
       contents: read
     needs: release-please

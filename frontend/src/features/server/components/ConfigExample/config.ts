@@ -114,9 +114,7 @@ function packageIdentifier(pkg: Package): string {
 
 	switch (pkg.registry_type) {
 		case "npm":
-			return `${pkg.identifier}@${pkg.version}`;
 		case "pypi":
-			return `${pkg.identifier}==${pkg.version}`;
 		case "nuget":
 			return `${pkg.identifier}@${pkg.version}`;
 		case "oci":

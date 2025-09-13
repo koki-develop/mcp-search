@@ -7,6 +7,7 @@ const basePkg = (over: Partial<Package> = {}): Package => ({
 	version: "1.2.3",
 	registry_type: "npm",
 	runtime_hint: "npx",
+	transport: { type: "stdio" },
 	...over,
 });
 
@@ -20,9 +21,13 @@ describe("buildConfigExample", () => {
 	it("builds npx command with package@version", () => {
 		const cmd = buildConfigExample(basePkg());
 		expect(cmd).toEqual({
-			command: "npx",
-			args: ["example/pkg@1.2.3"],
-			env: undefined,
+			type: "stdio",
+			json: {
+				type: "stdio",
+				command: "npx",
+				args: ["example/pkg@1.2.3"],
+				env: undefined,
+			},
 		});
 	});
 
@@ -36,9 +41,13 @@ describe("buildConfigExample", () => {
 			}),
 		);
 		expect(cmd).toEqual({
-			command: "uvx",
-			args: ["weather==0.5.0"],
-			env: undefined,
+			type: "stdio",
+			json: {
+				type: "stdio",
+				command: "uvx",
+				args: ["weather@0.5.0"],
+				env: undefined,
+			},
 		});
 	});
 
@@ -51,9 +60,13 @@ describe("buildConfigExample", () => {
 			}),
 		);
 		expect(cmd).toEqual({
-			command: "dnx",
-			args: ["Knapcode.SampleMcpServer@1.2.3"],
-			env: undefined,
+			type: "stdio",
+			json: {
+				type: "stdio",
+				command: "dnx",
+				args: ["Knapcode.SampleMcpServer@1.2.3"],
+				env: undefined,
+			},
 		});
 	});
 
@@ -66,9 +79,13 @@ describe("buildConfigExample", () => {
 			}),
 		);
 		expect(cmd).toEqual({
-			command: "docker",
-			args: ["org/image:1.2.3"],
-			env: undefined,
+			type: "stdio",
+			json: {
+				type: "stdio",
+				command: "docker",
+				args: ["org/image:1.2.3"],
+				env: undefined,
+			},
 		});
 	});
 
@@ -79,11 +96,15 @@ describe("buildConfigExample", () => {
 		];
 		const cmd = buildConfigExample(basePkg({ environment_variables: envs }));
 		expect(cmd).toEqual({
-			command: "npx",
-			args: ["example/pkg@1.2.3"],
-			env: {
-				API_KEY: "<secret>",
-				LOG_LEVEL: "<value>",
+			type: "stdio",
+			json: {
+				type: "stdio",
+				command: "npx",
+				args: ["example/pkg@1.2.3"],
+				env: {
+					API_KEY: "<secret>",
+					LOG_LEVEL: "<value>",
+				},
 			},
 		});
 	});
@@ -95,9 +116,13 @@ describe("buildConfigExample", () => {
 		];
 		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
 		expect(cmd).toEqual({
-			command: "npx",
-			args: ["example/pkg@1.2.3", "--port=<value>", "--flag=<value>"],
-			env: undefined,
+			type: "stdio",
+			json: {
+				type: "stdio",
+				command: "npx",
+				args: ["example/pkg@1.2.3", "--port=<value>", "--flag=<value>"],
+				env: undefined,
+			},
 		});
 	});
 
@@ -108,9 +133,13 @@ describe("buildConfigExample", () => {
 		];
 		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
 		expect(cmd).toEqual({
-			command: "npx",
-			args: ["example/pkg@1.2.3", "<value>", "<value>"],
-			env: undefined,
+			type: "stdio",
+			json: {
+				type: "stdio",
+				command: "npx",
+				args: ["example/pkg@1.2.3", "<value>", "<value>"],
+				env: undefined,
+			},
 		});
 	});
 
@@ -133,9 +162,13 @@ describe("buildConfigExample", () => {
 			}),
 		);
 		expect(cmd).toEqual({
-			command: "docker",
-			args: ["--mount=<value>", "org/app:1.2.3"],
-			env: undefined,
+			type: "stdio",
+			json: {
+				type: "stdio",
+				command: "docker",
+				args: ["--mount=<value>", "org/app:1.2.3"],
+				env: undefined,
+			},
 		});
 	});
 
@@ -145,9 +178,13 @@ describe("buildConfigExample", () => {
 		];
 		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
 		expect(cmd).toEqual({
-			command: "npx",
-			args: ["example/pkg@1.2.3", "<value>"],
-			env: undefined,
+			type: "stdio",
+			json: {
+				type: "stdio",
+				command: "npx",
+				args: ["example/pkg@1.2.3", "<value>"],
+				env: undefined,
+			},
 		});
 	});
 
@@ -157,9 +194,13 @@ describe("buildConfigExample", () => {
 		];
 		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
 		expect(cmd).toEqual({
-			command: "npx",
-			args: ["example/pkg@1.2.3", "<filepath>"],
-			env: undefined,
+			type: "stdio",
+			json: {
+				type: "stdio",
+				command: "npx",
+				args: ["example/pkg@1.2.3", "<filepath>"],
+				env: undefined,
+			},
 		});
 	});
 
@@ -169,9 +210,13 @@ describe("buildConfigExample", () => {
 		];
 		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
 		expect(cmd).toEqual({
-			command: "npx",
-			args: ["example/pkg@1.2.3", "-p=<value>"],
-			env: undefined,
+			type: "stdio",
+			json: {
+				type: "stdio",
+				command: "npx",
+				args: ["example/pkg@1.2.3", "-p=<value>"],
+				env: undefined,
+			},
 		});
 	});
 
@@ -186,9 +231,13 @@ describe("buildConfigExample", () => {
 		];
 		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
 		expect(cmd).toEqual({
-			command: "npx",
-			args: ["example/pkg@1.2.3", "--mode=<value>"],
-			env: undefined,
+			type: "stdio",
+			json: {
+				type: "stdio",
+				command: "npx",
+				args: ["example/pkg@1.2.3", "--mode=<value>"],
+				env: undefined,
+			},
 		});
 	});
 
@@ -203,9 +252,13 @@ describe("buildConfigExample", () => {
 		];
 		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
 		expect(cmd).toEqual({
-			command: "npx",
-			args: ["example/pkg@1.2.3", "--arg=<value>"],
-			env: undefined,
+			type: "stdio",
+			json: {
+				type: "stdio",
+				command: "npx",
+				args: ["example/pkg@1.2.3", "--arg=<value>"],
+				env: undefined,
+			},
 		});
 	});
 
@@ -233,9 +286,13 @@ describe("buildConfigExample", () => {
 			}),
 		);
 		expect(cmd).toEqual({
-			command: "docker",
-			args: ["--mount=<value>", "org/app:1.2.3", "<value>", "<value>"],
-			env: undefined,
+			type: "stdio",
+			json: {
+				type: "stdio",
+				command: "docker",
+				args: ["--mount=<value>", "org/app:1.2.3", "<value>", "<value>"],
+				env: undefined,
+			},
 		});
 	});
 
@@ -259,9 +316,13 @@ describe("buildConfigExample", () => {
 			}),
 		);
 		expect(cmd).toEqual({
-			command: "docker",
-			args: ["--mount=<value>", "org/app:1.2.3"],
-			env: undefined,
+			type: "stdio",
+			json: {
+				type: "stdio",
+				command: "docker",
+				args: ["--mount=<value>", "org/app:1.2.3"],
+				env: undefined,
+			},
 		});
 	});
 
@@ -277,11 +338,15 @@ describe("buildConfigExample", () => {
 		];
 		const cmd = buildConfigExample(basePkg({ environment_variables: envs }));
 		expect(cmd).toEqual({
-			command: "npx",
-			args: ["example/pkg@1.2.3"],
-			env: {
-				TOKEN: "<value>",
-				SECRET: "<secret>",
+			type: "stdio",
+			json: {
+				type: "stdio",
+				command: "npx",
+				args: ["example/pkg@1.2.3"],
+				env: {
+					TOKEN: "<value>",
+					SECRET: "<secret>",
+				},
 			},
 		});
 	});
@@ -292,9 +357,13 @@ describe("buildConfigExample", () => {
 		];
 		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
 		expect(cmd).toEqual({
-			command: "npx",
-			args: ["example/pkg@1.2.3", "<value>"],
-			env: undefined,
+			type: "stdio",
+			json: {
+				type: "stdio",
+				command: "npx",
+				args: ["example/pkg@1.2.3", "<value>"],
+				env: undefined,
+			},
 		});
 	});
 
@@ -305,9 +374,13 @@ describe("buildConfigExample", () => {
 		];
 		const cmd = buildConfigExample(basePkg({ environment_variables: envs }));
 		expect(cmd).toEqual({
-			command: "npx",
-			args: ["example/pkg@1.2.3"],
-			env: undefined,
+			type: "stdio",
+			json: {
+				type: "stdio",
+				command: "npx",
+				args: ["example/pkg@1.2.3"],
+				env: undefined,
+			},
 		});
 	});
 
@@ -318,9 +391,13 @@ describe("buildConfigExample", () => {
 		];
 		const cmd = buildConfigExample(basePkg({ package_arguments: args }));
 		expect(cmd).toEqual({
-			command: "npx",
-			args: ["example/pkg@1.2.3"],
-			env: undefined,
+			type: "stdio",
+			json: {
+				type: "stdio",
+				command: "npx",
+				args: ["example/pkg@1.2.3"],
+				env: undefined,
+			},
 		});
 	});
 });

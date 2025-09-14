@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.4](https://github.com/koki-develop/mcp-search/compare/v0.8.3...v0.8.4) (2025-09-14)
+
+
+### Bug Fixes
+
+* **frontend:** Fix badge colors ([8a21a43](https://github.com/koki-develop/mcp-search/commit/8a21a43e22e6ae43b737c229af741d9431a0a865))
+
 ## [0.8.3](https://github.com/koki-develop/mcp-search/compare/v0.8.2...v0.8.3) (2025-09-14)
 
 

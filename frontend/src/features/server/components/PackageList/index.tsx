@@ -51,7 +51,7 @@ export default function ServerPackageList({
 								{/*Identifier*/}
 								{url ? (
 									<Anchor
-										className="inline-flex items-center gap-1 font-bold"
+										className="inline-flex items-center gap-1 font-bold w-fit"
 										href={url}
 										target="_blank"
 										rel="noreferrer"

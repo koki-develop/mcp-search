@@ -1,8 +1,10 @@
-import { Anchor, Badge, Box, Card, Group, Stack, Text } from "@mantine/core";
+import { Anchor, Box, Card, Group, Stack, Text } from "@mantine/core";
 import { IconExternalLink } from "@tabler/icons-react";
 import type { Package } from "../../lib/types";
 import ConfigExample from "../ConfigExample";
 import KeyValue from "../KeyValue";
+import { RegistryBadge } from "../RegistryBadge";
+import { TransportBadge } from "../TransportBadge";
 
 function packageUrl(pkg: Package): string | undefined {
 	if (!pkg.identifier) return undefined;
@@ -40,12 +42,9 @@ export default function ServerPackageList({
 								{/*Badges*/}
 								<Group gap="xs" wrap="wrap">
 									{pkg.registry_type && (
-										<Badge variant="light" color="blue">
-											{pkg.registry_type}
-										</Badge>
+										<RegistryBadge registry={pkg.registry_type} />
 									)}
-									{pkg.version && <Badge variant="light">{pkg.version}</Badge>}
-									<Badge variant="light">{pkg.transport.type}</Badge>
+									<TransportBadge transport={pkg.transport.type} />
 								</Group>
 
 								{/*Identifier*/}

@@ -1,7 +1,8 @@
-import { Badge, Box, Card, Group, Stack, Text } from "@mantine/core";
+import { Box, Card, Group, Stack, Text } from "@mantine/core";
 import type { Remote } from "../../lib/types";
 import ConfigExample from "../ConfigExample";
 import KeyValue from "../KeyValue";
+import { TransportBadge } from "../TransportBadge";
 
 export type ServerRemoteListProps = {
 	remotes: Remote[];
@@ -16,9 +17,9 @@ export default function ServerRemoteList({ remotes }: ServerRemoteListProps) {
 						<Stack gap={6}>
 							{/* Badges */}
 							<Group gap="xs" wrap="wrap">
-								<Badge variant="light">
-									{remote.transport_type ?? remote.type}
-								</Badge>
+								<TransportBadge
+									transport={remote.transport_type ?? remote.type}
+								/>
 							</Group>
 
 							{/*Config*/}

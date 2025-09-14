@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.5](https://github.com/koki-develop/mcp-search/compare/v0.8.4...v0.8.5) (2025-09-14)
+
+
+### Bug Fixes
+
+* **frontend:** Show input.value || input.value_hint ([5146a1d](https://github.com/koki-develop/mcp-search/commit/5146a1d58a07644c8300e7826e3e9c04a6c5d276))
+
 ## [0.8.4](https://github.com/koki-develop/mcp-search/compare/v0.8.3...v0.8.4) (2025-09-14)
 
 

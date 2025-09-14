@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.2](https://github.com/koki-develop/mcp-search/compare/v0.8.1...v0.8.2) (2025-09-14)
+
+
+### Bug Fixes
+
+* **frontend:** fix link style ([5a3e805](https://github.com/koki-develop/mcp-search/commit/5a3e80587a1fea2508cafa912d2175a3054bbd1f))
+* **frontend:** Sort classes ([0051b88](https://github.com/koki-develop/mcp-search/commit/0051b88fc157da5b8c80e133d0a8810843b62f00))
+
 ## [0.8.1](https://github.com/koki-develop/mcp-search/compare/v0.8.0...v0.8.1) (2025-09-13)
 
 

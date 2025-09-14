@@ -9,14 +9,14 @@ const colorMap: Record<string, string> = {
 	sse: "blue",
 	streamable: "teal",
 	"streamable-http": "cyan",
-	stdio: "orange",
+	stdio: "red",
 };
 
 export function TransportBadge({ transport }: TransportBadgeProps) {
 	const color = colorMap[transport] || "blue";
 
 	return (
-		<Badge variant="filled" color={color}>
+		<Badge variant="light" color={color}>
 			{transport}
 		</Badge>
 	);

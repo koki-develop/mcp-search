@@ -11,7 +11,7 @@ export default function KeyValue({ kvs }: KeyValueProps) {
 			{kvs.map((item) => (
 				<Box key={item.name}>
 					<Group gap={2}>
-						<Code className="text-xs font-bold">{item.name}</Code>
+						<Code className="font-bold text-xs">{item.name}</Code>
 						{item.is_required && (
 							<Text className="font-bold" size="xs" c="red">
 								*

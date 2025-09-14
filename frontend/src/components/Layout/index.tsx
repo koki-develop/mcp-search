@@ -4,7 +4,7 @@ import Footer from "./Footer";
 
 export default function Layout({ children }: PropsWithChildren) {
 	return (
-		<Box className="min-h-dvh flex flex-col">
+		<Box className="flex min-h-dvh flex-col">
 			<Box component="main" className="grow">
 				{children}
 			</Box>

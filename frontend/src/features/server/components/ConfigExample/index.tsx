@@ -28,14 +28,14 @@ export default function ConfigExample(props: CommandExampleProps) {
 		<Stack gap={6}>
 			{(config.type === "sse" || config.type === "http") && config.command && (
 				<CodeHighlight
-					className="whitespace-nowrap overflow-x-auto text-sm flex-1"
+					className="flex-1 overflow-x-auto whitespace-nowrap text-sm"
 					language="shell"
 					code={config.command}
 				/>
 			)}
 
 			<CodeHighlight
-				className="whitespace-pre-wrap overflow-x-auto text-sm flex-1"
+				className="flex-1 overflow-x-auto whitespace-pre-wrap text-sm"
 				language="json"
 				code={JSON.stringify(config.json, null, 2)}
 			/>

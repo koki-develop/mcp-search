@@ -145,7 +145,7 @@ describe("buildPackageConfigExample", () => {
 			json: {
 				type: "stdio",
 				command: "npx",
-				args: ["-y", "example/pkg@1.2.3", "<value>", "<value>"],
+				args: ["-y", "example/pkg@1.2.3", "run", "<target_dir>"],
 				env: undefined,
 			},
 		});
@@ -156,7 +156,7 @@ describe("buildPackageConfigExample", () => {
 			{
 				type: "named",
 				name: "mount",
-				value: "src={src}",
+				value: "{src}",
 				variables: { src: { default: "/host" } },
 				is_required: true,
 			},
@@ -174,7 +174,7 @@ describe("buildPackageConfigExample", () => {
 			json: {
 				type: "stdio",
 				command: "docker",
-				args: ["--mount=<value>", "org/app:1.2.3"],
+				args: ["--mount={src}", "org/app:1.2.3"],
 				env: undefined,
 			},
 		});
@@ -190,7 +190,7 @@ describe("buildPackageConfigExample", () => {
 			json: {
 				type: "stdio",
 				command: "npx",
-				args: ["-y", "example/pkg@1.2.3", "<value>"],
+				args: ["-y", "example/pkg@1.2.3", '"hello world"'],
 				env: undefined,
 			},
 		});
@@ -254,7 +254,7 @@ describe("buildPackageConfigExample", () => {
 			{
 				type: "named",
 				name: "arg",
-				value: "path=/tmp/file name",
+				value: "/tmp/file name",
 				is_required: true,
 			},
 		];
@@ -264,7 +264,7 @@ describe("buildPackageConfigExample", () => {
 			json: {
 				type: "stdio",
 				command: "npx",
-				args: ["-y", "example/pkg@1.2.3", "--arg=<value>"],
+				args: ["-y", "example/pkg@1.2.3", '--arg="/tmp/file name"'],
 				env: undefined,
 			},
 		});
@@ -275,7 +275,7 @@ describe("buildPackageConfigExample", () => {
 			{
 				type: "named",
 				name: "mount",
-				value: "src={src}",
+				value: "{src}",
 				variables: { src: { default: "/data" } },
 				is_required: true,
 			},
@@ -298,7 +298,7 @@ describe("buildPackageConfigExample", () => {
 			json: {
 				type: "stdio",
 				command: "docker",
-				args: ["--mount=<value>", "org/app:1.2.3", "<value>", "<value>"],
+				args: ["--mount={src}", "org/app:1.2.3", "run", "abc"],
 				env: undefined,
 			},
 		});
@@ -309,7 +309,7 @@ describe("buildPackageConfigExample", () => {
 			{
 				type: "named",
 				name: "mount",
-				value: "src={src}",
+				value: "{src}",
 				is_repeated: true,
 				variables: { src: { default: "/data" } },
 				is_required: true,
@@ -328,7 +328,7 @@ describe("buildPackageConfigExample", () => {
 			json: {
 				type: "stdio",
 				command: "docker",
-				args: ["--mount=<value>", "org/app:1.2.3"],
+				args: ["--mount={src}", "org/app:1.2.3"],
 				env: undefined,
 			},
 		});
@@ -338,7 +338,7 @@ describe("buildPackageConfigExample", () => {
 		const envs: KeyValueInput[] = [
 			{
 				name: "TOKEN",
-				value: "id={id}",
+				value: "{id}",
 				variables: { id: { default: "42" } },
 				is_required: true,
 			},
@@ -354,7 +354,7 @@ describe("buildPackageConfigExample", () => {
 				command: "npx",
 				args: ["-y", "example/pkg@1.2.3"],
 				env: {
-					TOKEN: "<value>",
+					TOKEN: "{id}",
 					SECRET: "<secret>",
 				},
 			},
@@ -371,7 +371,7 @@ describe("buildPackageConfigExample", () => {
 			json: {
 				type: "stdio",
 				command: "npx",
-				args: ["-y", "example/pkg@1.2.3", "<value>"],
+				args: ["-y", "example/pkg@1.2.3", '"say \\"hello\\""'],
 				env: undefined,
 			},
 		});

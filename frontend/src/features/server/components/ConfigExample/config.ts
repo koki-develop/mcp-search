@@ -106,7 +106,7 @@ export function buildPackageConfigExample(pkg: Package): Config | null {
 		...renderArgs(
 			pkg.package_arguments?.filter((arg) => arg.is_required) ?? [],
 		),
-	].map(quoteIfNeeded);
+	];
 
 	const env = renderKeyValue(
 		pkg.environment_variables?.filter((env) => env.is_required) ?? [],
@@ -200,12 +200,12 @@ function renderArgs(args: Argument[]): string[] {
 				parts.push(flag);
 			} else {
 				const val = stringifyValue(arg);
-				parts.push(`${flag}=${val}`);
+				parts.push(`${flag}=${quoteIfNeeded(val)}`);
 			}
 			continue;
 		}
 
-		parts.push(stringifyValue(arg));
+		parts.push(quoteIfNeeded(stringifyValue(arg)));
 	}
 	return parts;
 }
@@ -222,9 +222,19 @@ function normalizeFlagName(name: string): string {
 
 type MinimalInput = {
 	format?: InputFormat;
+	value?: string;
+	value_hint?: string;
 };
 
 function stringifyValue(input: MinimalInput): string {
+	if (input.value) {
+		return input.value;
+	}
+
+	if (input.value_hint) {
+		return `<${input.value_hint}>`;
+	}
+
 	switch (input.format) {
 		case "string":
 			return "<string>";

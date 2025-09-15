@@ -84,7 +84,9 @@ export default function Home() {
 							<ServerCard
 								key={server.id}
 								server={server}
-								onSelect={(server) => setSearchParams({ d: server.name })}
+								onSelect={(server) =>
+									setSearchParams({ d: server.name }, { replace: true })
+								}
 							/>
 						))}
 					</Stack>
@@ -92,7 +94,7 @@ export default function Home() {
 
 				<ServerDetails
 					name={detailedServerName ?? undefined}
-					onClose={() => setSearchParams({})}
+					onClose={() => setSearchParams({}, { replace: true })}
 				/>
 
 				{isFetching && (

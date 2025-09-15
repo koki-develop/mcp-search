@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.1](https://github.com/koki-develop/mcp-search/compare/v0.9.0...v0.9.1) (2025-09-15)
+
+
+### Bug Fixes
+
+* **frontend:** Enable history replace ([81c1b4f](https://github.com/koki-develop/mcp-search/commit/81c1b4f6d42d05aa5728278d2fd4c56bfdc0f0ac))
+* **frontend:** Fix card styles ([01b7d71](https://github.com/koki-develop/mcp-search/commit/01b7d712f85232bb6e6063760ec42afd63646425))
+
 ## [0.9.0](https://github.com/koki-develop/mcp-search/compare/v0.8.6...v0.9.0) (2025-09-15)
 
 

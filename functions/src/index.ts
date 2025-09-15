@@ -56,7 +56,7 @@ export const fetchMcpServers = onSchedule(
 					if (serverId) {
 						const docId = await getDocIdByServerId(serverId);
 						if (docId) {
-							batch.delete(firestore.collection("servers_v0").doc(serverId));
+							batch.delete(firestore.collection("servers_v0").doc(docId));
 						}
 					}
 				}

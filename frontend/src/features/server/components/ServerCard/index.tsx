@@ -1,4 +1,4 @@
-import { Button, Text } from "@mantine/core";
+import { Card, Text } from "@mantine/core";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import type { Server } from "../../lib/servers";
@@ -27,14 +27,11 @@ export default function ServerCard({ server, onSelect }: ServerCardProps) {
 	})();
 
 	return (
-		<Button
-			classNames={{
-				root: "h-fit shadow-sm",
-				inner: "items-start justify-start",
-				label: "flex items-start flex-col",
-			}}
-			p="md"
-			variant="default"
+		<Card
+			component="button"
+			className="cursor-pointer text-left focus-visible:outline-1 focus-visible:outline-[#228be6]"
+			withBorder
+			shadow="xs"
 			onClick={() => onSelect(server)}
 		>
 			<Text className="break-all font-bold" size="xl">
@@ -49,6 +46,6 @@ export default function ServerCard({ server, onSelect }: ServerCardProps) {
 					{metaItems.join(" • ")}
 				</Text>
 			)}
-		</Button>
+		</Card>
 	);
 }

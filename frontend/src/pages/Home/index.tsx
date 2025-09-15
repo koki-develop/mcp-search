@@ -11,7 +11,8 @@ import {
 } from "@mantine/core";
 import { useDebouncedState, useHotkeys } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons-react";
-import { useRef, useState } from "react";
+import { useRef } from "react";
+import { useSearchParams } from "react-router";
 import ServerCard from "../../features/server/components/ServerCard";
 import { ServerDetails } from "../../features/server/components/ServerDetails";
 import { useServers, useServersCount } from "../../features/server/lib/servers";
@@ -19,7 +20,8 @@ import { useServers, useServersCount } from "../../features/server/lib/servers";
 export default function Home() {
 	const searchInputRef = useRef<HTMLInputElement>(null);
 	const [keyword, setKeyword] = useDebouncedState<string>("", 200);
-	const [detailedServerName, setDetailedServerName] = useState<string>();
+	const [searchParams, setSearchParams] = useSearchParams();
+	const detailedServerName = searchParams.get("d");
 
 	const { isFetching, data, hasNextPage, fetchNextPage } = useServers({
 		keyword,
@@ -82,15 +84,15 @@ export default function Home() {
 							<ServerCard
 								key={server.id}
 								server={server}
-								onSelect={(server) => setDetailedServerName(server.name)}
+								onSelect={(server) => setSearchParams({ d: server.name })}
 							/>
 						))}
 					</Stack>
 				)}
 
 				<ServerDetails
-					name={detailedServerName}
-					onClose={() => setDetailedServerName(undefined)}
+					name={detailedServerName ?? undefined}
+					onClose={() => setSearchParams({})}
 				/>
 
 				{isFetching && (

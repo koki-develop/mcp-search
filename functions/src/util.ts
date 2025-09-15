@@ -5,3 +5,17 @@ export const bigram = (str: string): string[] => {
 	}
 	return bigrams;
 };
+
+export function numberToAlphabet(number: number, fixedLength: number) {
+	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	let result = "";
+
+	while (number > 0) {
+		const remainder = number % alphabet.length;
+		result = alphabet[remainder] + result;
+		number = Math.floor(number / alphabet.length);
+	}
+
+	result = result.padStart(fixedLength, "A");
+	return result;
+}

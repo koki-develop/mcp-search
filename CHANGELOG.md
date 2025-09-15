@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.2](https://github.com/koki-develop/mcp-search/compare/v0.9.1...v0.9.2) (2025-09-15)
+
+
+### Bug Fixes
+
+* **deps:** update dependency firebase-admin to v13 ([#25](https://github.com/koki-develop/mcp-search/issues/25)) ([1ce2d7e](https://github.com/koki-develop/mcp-search/commit/1ce2d7e25782c2349ca0d193db5999e6a97f127e))
+
 ## [0.9.1](https://github.com/koki-develop/mcp-search/compare/v0.9.0...v0.9.1) (2025-09-15)
 
 

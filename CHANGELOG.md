@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.9.0](https://github.com/koki-develop/mcp-search/compare/v0.8.6...v0.9.0) (2025-09-15)
+
+
+### Features
+
+* **frontend:** Keep server name to search param ([268bf89](https://github.com/koki-develop/mcp-search/commit/268bf89801adaa5d3fa3e20c0bb05fca9185ac9c))
+
+
+### Bug Fixes
+
+* **frontend:** Fix styles ([d44aeab](https://github.com/koki-develop/mcp-search/commit/d44aeaba305268297ee87daa6894c8b0e910615d))
+* **frontend:** Fix styles ([29bb147](https://github.com/koki-develop/mcp-search/commit/29bb14726bb1e58838dd5668f457eed3ad9469d7))
+* **frontend:** Fix styles ([2cb7a09](https://github.com/koki-develop/mcp-search/commit/2cb7a098021c63e593a8499dc0ee52bc90fcff3e))
+
 ## [0.8.6](https://github.com/koki-develop/mcp-search/compare/v0.8.5...v0.8.6) (2025-09-15)
 
 

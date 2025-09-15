@@ -1,16 +1,16 @@
-import { Card, Text } from "@mantine/core";
+import { Button, Text } from "@mantine/core";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { Link } from "react-router";
 import type { Server } from "../../lib/servers";
 
 dayjs.extend(relativeTime);
 
 export type ServerCardProps = {
 	server: Server;
-	onSelect: (server: Server) => void;
 };
 
-export default function ServerCard({ server, onSelect }: ServerCardProps) {
+export default function ServerCard({ server }: ServerCardProps) {
 	const meta = server._meta?.["io.modelcontextprotocol.registry/official"];
 	const metaItems = (() => {
 		const items = [server.version];
@@ -27,12 +27,16 @@ export default function ServerCard({ server, onSelect }: ServerCardProps) {
 	})();
 
 	return (
-		<Card
-			component="button"
-			className="cursor-pointer text-left"
-			withBorder
-			shadow="xs"
-			onClick={() => onSelect(server)}
+		<Button
+			component={Link}
+			classNames={{
+				root: "h-fit shadow-sm",
+				inner: "items-start justify-start",
+				label: "flex items-start flex-col",
+			}}
+			p="md"
+			variant="default"
+			to={`?d=${encodeURIComponent(server.name)}`}
 		>
 			<Text className="break-all font-bold" size="xl">
 				{server.name}
@@ -46,6 +50,6 @@ export default function ServerCard({ server, onSelect }: ServerCardProps) {
 					{metaItems.join(" • ")}
 				</Text>
 			)}
-		</Card>
+		</Button>
 	);
 }

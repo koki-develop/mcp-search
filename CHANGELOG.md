@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.6](https://github.com/koki-develop/mcp-search/compare/v0.8.5...v0.8.6) (2025-09-15)
+
+
+### Bug Fixes
+
+* **functions:** fix ([dd9b635](https://github.com/koki-develop/mcp-search/commit/dd9b635f08a30107c5b023a63499571d2c846de5))
+* **functions:** Sort servers by updated at ([ca49f2a](https://github.com/koki-develop/mcp-search/commit/ca49f2a0ecace101b56cd7d849d038e664717757))
+
 ## [0.8.5](https://github.com/koki-develop/mcp-search/compare/v0.8.4...v0.8.5) (2025-09-14)
 
 

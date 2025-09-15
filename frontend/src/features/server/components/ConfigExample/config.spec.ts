@@ -1,17 +1,17 @@
 import { describe, expect, it } from "bun:test";
-import type { Argument, KeyValueInput, Package } from "../../lib/types";
-import { buildPackageConfigExample } from "./config";
-
-const basePkg = (over: Partial<Package> = {}): Package => ({
-	identifier: "example/pkg",
-	version: "1.2.3",
-	registry_type: "npm",
-	runtime_hint: "npx",
-	transport: { type: "stdio" },
-	...over,
-});
+import type { Argument, KeyValueInput, Package, Remote } from "../../lib/types";
+import { buildPackageConfigExample, buildRemoteConfigExample } from "./config";
 
 describe("buildPackageConfigExample", () => {
+	const basePkg = (over: Partial<Package> = {}): Package => ({
+		identifier: "example/pkg",
+		version: "1.2.3",
+		registry_type: "npm",
+		runtime_hint: "npx",
+		transport: { type: "stdio" },
+		...over,
+	});
+
 	it("returns null for missing identifier/version or mcpb", () => {
 		expect(
 			buildPackageConfigExample(basePkg({ identifier: undefined })),
@@ -410,6 +410,114 @@ describe("buildPackageConfigExample", () => {
 				args: ["-y", "example/pkg@1.2.3"],
 				env: undefined,
 			},
+		});
+	});
+});
+
+describe("buildRemoteConfigExample", () => {
+	const baseRemote = (over: Partial<Remote> = {}): Remote => ({
+		type: "streamable",
+		transport_type: "streamable",
+		url: "https://example.com/endpoint",
+		...over,
+	});
+
+	it("returns SSE config with url and no headers", () => {
+		const cfg = buildRemoteConfigExample(
+			baseRemote({ transport_type: "sse", url: "https://ex.com/sse" }),
+		);
+		expect(cfg).toEqual({
+			type: "sse",
+			json: { type: "sse", url: "https://ex.com/sse" },
+		});
+	});
+
+	it("renders headers using placeholders and masks secrets (SSE)", () => {
+		const headers: KeyValueInput[] = [
+			{ name: "X-Token", is_secret: true },
+			{ name: "X-Default", default: "foo" },
+			{ name: "X-Num", format: "number" },
+			{ name: "X-Name", value: "Alice" },
+		];
+		const cfg = buildRemoteConfigExample(
+			baseRemote({ transport_type: "sse", url: "https://ex.com/sse", headers }),
+		);
+		expect(cfg).toEqual({
+			type: "sse",
+			json: {
+				type: "sse",
+				url: "https://ex.com/sse",
+				headers: {
+					"X-Token": "<secret>",
+					"X-Default": "<value>",
+					"X-Num": "<number>",
+					"X-Name": "Alice",
+				},
+			},
+		});
+	});
+
+	it("maps streamable -> HTTP config with url and headers", () => {
+		const headers: KeyValueInput[] = [
+			{ name: "Accept", value: "text/event-stream" },
+		];
+		const cfg = buildRemoteConfigExample(
+			baseRemote({
+				transport_type: "streamable",
+				url: "https://ex.com/http",
+				headers,
+			}),
+		);
+		expect(cfg).toEqual({
+			type: "http",
+			json: {
+				type: "http",
+				url: "https://ex.com/http",
+				headers: { Accept: "text/event-stream" },
+			},
+		});
+	});
+
+	it("falls back to remote.type when transport_type is absent", () => {
+		const r = { type: "sse", url: "https://ex.com/sse" } as unknown as Remote;
+		const cfg = buildRemoteConfigExample(r);
+		expect(cfg).toEqual({
+			type: "sse",
+			json: { type: "sse", url: "https://ex.com/sse" },
+		});
+	});
+
+	it("returns null for unknown transport types", () => {
+		const cfg = buildRemoteConfigExample(
+			// biome-ignore lint/suspicious/noExplicitAny: ignore
+			baseRemote({ transport_type: "stdio" as unknown as any }),
+		);
+		expect(cfg).toBeNull();
+	});
+
+	it("accepts 'streamable-http' and 'http' as HTTP aliases", () => {
+		const http1 = buildRemoteConfigExample(
+			baseRemote({
+				// biome-ignore lint/suspicious/noExplicitAny: ignore
+				transport_type: "streamable-http" as unknown as any,
+				url: "https://ex.com/a",
+			}),
+		);
+		expect(http1).toEqual({
+			type: "http",
+			json: { type: "http", url: "https://ex.com/a" },
+		});
+
+		const http2 = buildRemoteConfigExample(
+			baseRemote({
+				// biome-ignore lint/suspicious/noExplicitAny: ignore
+				transport_type: "http" as unknown as any,
+				url: "https://ex.com/b",
+			}),
+		);
+		expect(http2).toEqual({
+			type: "http",
+			json: { type: "http", url: "https://ex.com/b" },
 		});
 	});
 });

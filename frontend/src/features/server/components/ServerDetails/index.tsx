@@ -1,6 +1,7 @@
 import {
 	Anchor,
 	Badge,
+	Box,
 	Divider,
 	Drawer,
 	Group,
@@ -72,8 +73,21 @@ export function ServerDetails({ name, onClose }: ServerDetailsProps) {
 				)
 			}
 		>
-			{isLoading && <Loader />}
-			{!isLoading && !server && <Text>Server not found.</Text>}
+			{isLoading && (
+				<Box className="text-center">
+					<Loader />
+				</Box>
+			)}
+			{!isLoading && !server && (
+				<Box className="flex flex-col items-center">
+					<Text size="lg" c="gray">
+						Server not found.
+					</Text>
+					<Text size="lg" c="gray">
+						({serverName})
+					</Text>
+				</Box>
+			)}
 			{!isLoading && server && (
 				<Stack gap="md">
 					<Stack gap={6}>

@@ -11,13 +11,16 @@ import {
 } from "@mantine/core";
 import { useDebouncedState, useHotkeys } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import ServerCard from "../../features/server/components/ServerCard";
+import { ServerDetails } from "../../features/server/components/ServerDetails";
 import { useServers, useServersCount } from "../../features/server/lib/servers";
 
 export default function Home() {
 	const searchInputRef = useRef<HTMLInputElement>(null);
 	const [keyword, setKeyword] = useDebouncedState<string>("", 200);
+	const [detailedServerName, setDetailedServerName] = useState<string>();
+
 	const { isFetching, data, hasNextPage, fetchNextPage } = useServers({
 		keyword,
 	});
@@ -76,10 +79,19 @@ export default function Home() {
 				{servers.length > 0 && (
 					<Stack gap="sm">
 						{servers.map((server) => (
-							<ServerCard key={server.id} server={server} />
+							<ServerCard
+								key={server.id}
+								server={server}
+								onSelect={(server) => setDetailedServerName(server.name)}
+							/>
 						))}
 					</Stack>
 				)}
+
+				<ServerDetails
+					name={detailedServerName}
+					onClose={() => setDetailedServerName(undefined)}
+				/>
 
 				{isFetching && (
 					<Box className="text-center">

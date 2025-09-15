@@ -23,7 +23,7 @@ type ListServersParams = {
 	cursor: QueryDocumentSnapshot | null;
 };
 
-const _buildNameTokensConstraints = (params: ListServersParams) => {
+function _buildNameTokensConstraints(params: ListServersParams) {
 	const words = params.keyword.split(/\s+/).filter((word) => word.length > 0);
 	return words.reduce<QueryConstraint[]>((acc, word) => {
 		const tokens = _bigram(word);
@@ -43,18 +43,18 @@ const _buildNameTokensConstraints = (params: ListServersParams) => {
 		);
 		return acc;
 	}, []);
-};
+}
 
-const _countServers = async (params: ListServersParams): Promise<number> => {
+async function _countServers(params: ListServersParams): Promise<number> {
 	const serversCollection = collection(firestore, "servers_v0");
 	const ref = query(serversCollection, ..._buildNameTokensConstraints(params));
 	const snapshot = await getCountFromServer(ref);
 	return snapshot.data().count;
-};
+}
 
-const _listServers = async (
+async function _listServers(
 	params: ListServersParams,
-): Promise<{ servers: Server[]; nextCursor: QueryDocumentSnapshot | null }> => {
+): Promise<{ servers: Server[]; nextCursor: QueryDocumentSnapshot | null }> {
 	const serversCollection = collection(firestore, "servers_v0");
 
 	const ref = query(
@@ -73,13 +73,13 @@ const _listServers = async (
 			? snapshot.docs[snapshot.docs.length - 1]
 			: null;
 	return { servers, nextCursor };
-};
+}
 
 export type UseServersParams = {
 	keyword: string;
 };
 
-export const useServers = (params: UseServersParams) => {
+export function useServers(params: UseServersParams) {
 	const { error, ...query } = useInfiniteQuery({
 		queryKey: ["servers", params],
 		initialPageParam: null as QueryDocumentSnapshot | null,
@@ -100,9 +100,9 @@ export const useServers = (params: UseServersParams) => {
 	}, [error]);
 
 	return query;
-};
+}
 
-export const useServersCount = (params: UseServersParams) => {
+export function useServersCount(params: UseServersParams) {
 	const { error, ...query } = useQuery({
 		queryKey: ["servers", params, "count"],
 		queryFn: () =>
@@ -120,12 +120,42 @@ export const useServersCount = (params: UseServersParams) => {
 	}, [error]);
 
 	return query;
+}
+
+async function getServerByName(name: string): Promise<Server | null> {
+	const serversCollection = collection(firestore, "servers_v0");
+	const ref = query(serversCollection, where("name", "==", name), limit(1));
+	const snapshot = await getDocs(ref);
+	if (snapshot.empty) {
+		return null;
+	}
+	const doc = snapshot.docs[0];
+	return { id: doc.id, ...doc.data() } as Server;
+}
+
+export type UseServerParams = {
+	name?: string;
 };
 
-const _bigram = (str: string): string[] => {
+export function useServer(params: UseServerParams) {
+	const { error, ...query } = useQuery({
+		queryKey: ["server", params],
+		queryFn: () => (params.name ? getServerByName(params.name) : null),
+	});
+
+	useEffect(() => {
+		if (error) {
+			console.error(error);
+		}
+	}, [error]);
+
+	return query;
+}
+
+function _bigram(str: string): string[] {
 	const bigrams: string[] = [];
 	for (let i = 0; i < str.length - 1; i++) {
 		bigrams.push(str.slice(i, i + 2));
 	}
 	return bigrams;
-};
+}

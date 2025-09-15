@@ -1,16 +1,16 @@
 import { Button, Text } from "@mantine/core";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { Link } from "react-router";
 import type { Server } from "../../lib/servers";
 
 dayjs.extend(relativeTime);
 
 export type ServerCardProps = {
 	server: Server;
+	onSelect: (server: Server) => void;
 };
 
-export default function ServerCard({ server }: ServerCardProps) {
+export default function ServerCard({ server, onSelect }: ServerCardProps) {
 	const meta = server._meta?.["io.modelcontextprotocol.registry/official"];
 	const metaItems = (() => {
 		const items = [server.version];
@@ -28,7 +28,6 @@ export default function ServerCard({ server }: ServerCardProps) {
 
 	return (
 		<Button
-			component={Link}
 			classNames={{
 				root: "h-fit shadow-sm",
 				inner: "items-start justify-start",
@@ -36,7 +35,7 @@ export default function ServerCard({ server }: ServerCardProps) {
 			}}
 			p="md"
 			variant="default"
-			to={`?d=${encodeURIComponent(server.name)}`}
+			onClick={() => onSelect(server)}
 		>
 			<Text className="break-all font-bold" size="xl">
 				{server.name}

@@ -81,7 +81,11 @@ export default function Home() {
 				{servers.length > 0 && (
 					<Stack gap="sm">
 						{servers.map((server) => (
-							<ServerCard key={server.id} server={server} />
+							<ServerCard
+								key={server.id}
+								server={server}
+								onSelect={(server) => setSearchParams({ d: server.name })}
+							/>
 						))}
 					</Stack>
 				)}
